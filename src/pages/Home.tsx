@@ -9,7 +9,7 @@ import InteractiveTimeline from "@/components/sections/InteractiveTimeline";
 import JourneyMap from "@/components/sections/JourneyMap";
 import MediaGallery from "@/components/sections/MediaGallery";
 import StarMap from "@/components/sections/StarMap";
-import LoveThermometer from "@/components/sections/LoveThermometer";
+import HeartLock from "@/components/sections/HeartLock";
 import LoveLetter from "@/components/LoveLetter";
 
 const Home = () => {
@@ -47,7 +47,7 @@ const Home = () => {
         <JourneyMap />
         <MediaGallery />
         <StarMap />
-        <LoveThermometer />
+        <HeartLock />
         <LoveLetter />
       </div>
     </div>
