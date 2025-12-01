@@ -10,7 +10,7 @@ const Auth = () => {
   const navigate = useNavigate();
 
   // Set your special date here (format: YYYY-MM-DD)
-  const SPECIAL_DATE = "2023-06-15"; // Change this to your actual date!
+  const SPECIAL_DATE = "2005-12-16"; // Change this to your actual date!
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
