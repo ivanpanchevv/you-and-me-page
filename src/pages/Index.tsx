@@ -1,17 +1,15 @@
-import Hero from "@/components/Hero";
-import WhyILoveYou from "@/components/WhyILoveYou";
-import MemoriesGallery from "@/components/MemoriesGallery";
-import LoveLetter from "@/components/LoveLetter";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
-  return (
-    <div className="min-h-screen">
-      <Hero />
-      <WhyILoveYou />
-      <MemoriesGallery />
-      <LoveLetter />
-    </div>
-  );
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect to auth page
+    navigate("/auth");
+  }, [navigate]);
+
+  return null;
 };
 
 export default Index;
