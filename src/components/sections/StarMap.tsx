@@ -127,7 +127,7 @@ const StarMap = () => {
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="text-center">
               <p className="text-white/80 text-lg font-playfair mb-2">
-                June 15, 2023
+                May 25, 2022
               </p>
               <p className="text-pink-300 text-sm">
                 The night the stars aligned for us
