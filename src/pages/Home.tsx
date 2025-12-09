@@ -24,6 +24,31 @@ const Home = () => {
     }
   }, [navigate]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["home", "messages", "timeline", "journey", "gallery", "stars", "heart-lock", "letter"];
+      const scrollPosition = window.scrollY + 100;
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const handleNavigate = (section: string) => {
     setActiveSection(section);
     const element = document.getElementById(section);

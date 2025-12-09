@@ -1,4 +1,4 @@
-import { Heart, Sparkles, Map, Image, Star, TreePine, MessageSquareHeart, Home } from "lucide-react";
+import { Heart, Sparkles, Map, Image, Star, MessageSquareHeart, Home, Mail } from "lucide-react";
 
 interface NavigationProps {
   activeSection: string;
@@ -13,7 +13,8 @@ const Navigation = ({ activeSection, onNavigate }: NavigationProps) => {
     { id: "journey", icon: Map, label: "Journey" },
     { id: "gallery", icon: Image, label: "Gallery" },
     { id: "stars", icon: Star, label: "Stars" },
-    { id: "tree", icon: TreePine, label: "Our Tree" },
+    { id: "heart-lock", icon: Heart, label: "Heart Lock" },
+    { id: "letter", icon: Mail, label: "Love Letter" },
   ];
 
   return (

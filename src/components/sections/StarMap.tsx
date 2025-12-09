@@ -1,8 +1,84 @@
 import { useEffect, useRef } from "react";
-import { Star, Heart } from "lucide-react";
+import { Star } from "lucide-react";
 
 const StarMap = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<number>();
+
+  // Create naturally distributed stars
+  const createStars = (width: number, height: number) => {
+    const stars = [];
+    const numStars = 150;
+    
+    for (let i = 0; i < numStars; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 2 + 0.5,
+        opacity: Math.random() * 0.8 + 0.2,
+        twinkleSpeed: Math.random() * 0.02 + 0.005,
+        twinkleDirection: Math.random() > 0.5 ? 1 : -1,
+        brightness: Math.random() * 0.3 + 0.7,
+      });
+    }
+    
+    return stars;
+  };
+
+  // Create heart constellation points
+  const createHeartConstellation = (width: number, height: number) => {
+    const centerX = width / 2;
+    const centerY = height / 2 - height * 0.02; // Slightly higher position
+    const scale = Math.min(width, height) * 0.18; // Bigger heart for better visibility
+    
+    const heartPoints = [];
+    
+    // Generate heart using improved parametric equations
+    const numPoints = 16; // More points for smoother shape
+    for (let i = 0; i < numPoints; i++) {
+      const t = (i / numPoints) * 2 * Math.PI;
+      
+      // Enhanced heart equation with better proportions
+      const heartX = 16 * Math.pow(Math.sin(t), 3);
+      const heartY = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+      
+      const x = centerX + scale * heartX / 16;
+      const y = centerY - scale * heartY / 16; // Improved scaling
+      
+      heartPoints.push({
+        x,
+        y,
+        size: 2.5 + Math.random() * 1.5, // More variation in size
+        opacity: 1,
+        twinkleSpeed: 0.008 + Math.random() * 0.012,
+        twinkleDirection: Math.random() > 0.5 ? 1 : -1,
+        brightness: 0.85 + Math.random() * 0.15,
+      });
+    }
+    
+    return heartPoints;
+  };
+
+  // Create connections between heart points
+  const createHeartConnections = () => {
+    const connections = [];
+    const numPoints = 16;
+    
+    // Connect each point to the next one to form the heart outline
+    for (let i = 0; i < numPoints; i++) {
+      connections.push([i, (i + 1) % numPoints]);
+    }
+    
+    // Add some inner connections for more constellation feel (optional)
+    // Connect opposite points occasionally for a more complex pattern
+    for (let i = 0; i < numPoints; i += 4) {
+      if (i + 8 < numPoints) {
+        connections.push([i, i + 8]);
+      }
+    }
+    
+    return connections;
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -11,134 +87,162 @@ const StarMap = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+    canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
-    // Create stars
-    const stars: Array<{ x: number; y: number; size: number; opacity: number; twinkleSpeed: number }> = [];
-    for (let i = 0; i < 200; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2,
-        opacity: Math.random(),
-        twinkleSpeed: Math.random() * 0.02 + 0.005,
-      });
-    }
-
-    // Create constellation (simple heart shape)
-    const heartConstellation = [
-      { x: 0.45, y: 0.4 },
-      { x: 0.47, y: 0.35 },
-      { x: 0.5, y: 0.33 },
-      { x: 0.53, y: 0.35 },
-      { x: 0.55, y: 0.4 },
-      { x: 0.5, y: 0.5 },
-      { x: 0.45, y: 0.4 },
-    ].map(point => ({
-      x: point.x * canvas.width,
-      y: point.y * canvas.height,
-    }));
-
-    let frame = 0;
+    const width = canvas.offsetWidth;
+    const height = canvas.offsetHeight;
+    
+    const stars = createStars(width, height);
+    const heartConstellation = createHeartConstellation(width, height);
+    const heartConnections = createHeartConnections();
 
     const animate = () => {
-      ctx.fillStyle = "rgba(15, 10, 30, 1)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Clear canvas with dark night sky gradient
+      const gradient = ctx.createLinearGradient(0, 0, 0, height);
+      gradient.addColorStop(0, "rgba(15, 10, 30, 1)");
+      gradient.addColorStop(1, "rgba(26, 16, 46, 1)");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
 
-      // Draw stars
+      // Draw stars with twinkling effect
       stars.forEach((star) => {
-        star.opacity += star.twinkleSpeed;
-        if (star.opacity > 1 || star.opacity < 0) {
-          star.twinkleSpeed *= -1;
+        // Update twinkling
+        star.opacity += star.twinkleSpeed * star.twinkleDirection;
+        if (star.opacity > 1 || star.opacity < 0.2) {
+          star.twinkleDirection *= -1;
         }
 
-        ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(star.opacity)})`;
+        const currentOpacity = Math.max(0.2, Math.min(1, star.opacity * star.brightness));
+        
+        // Draw star glow
+        const glowGradient = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 3);
+        glowGradient.addColorStop(0, `rgba(255, 255, 255, ${currentOpacity * 0.8})`);
+        glowGradient.addColorStop(0.5, `rgba(255, 255, 255, ${currentOpacity * 0.3})`);
+        glowGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+        
+        ctx.fillStyle = glowGradient;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size * 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw star core
+        ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity})`;
         ctx.beginPath();
         ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
         ctx.fill();
-      });
 
-      // Draw constellation lines
-      ctx.strokeStyle = "rgba(251, 113, 133, 0.6)";
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      heartConstellation.forEach((point, i) => {
-        if (i === 0) {
-          ctx.moveTo(point.x, point.y);
-        } else {
-          ctx.lineTo(point.x, point.y);
+        // Add some colored stars occasionally
+        if (Math.random() < 0.1) {
+          const colors = ["rgba(173, 216, 230, 0.8)", "rgba(255, 182, 193, 0.8)", "rgba(255, 255, 224, 0.8)"];
+          ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.size * 0.7, 0, Math.PI * 2);
+          ctx.fill();
         }
       });
-      ctx.stroke();
 
-      // Draw constellation stars (bigger and brighter)
-      heartConstellation.forEach((point) => {
-        const pulse = Math.sin(frame * 0.05) * 0.3 + 0.7;
-        ctx.fillStyle = `rgba(251, 113, 133, ${pulse})`;
+      // Heart constellation connections are now invisible - removed for cleaner look
+
+      // Draw heart constellation stars
+      heartConstellation.forEach((star, index) => {
+        // Update twinkling
+        star.opacity += star.twinkleSpeed * star.twinkleDirection;
+        if (star.opacity > 1 || star.opacity < 0.75) {
+          star.twinkleDirection *= -1;
+        }
+
+        const currentOpacity = Math.max(0.75, Math.min(1, star.opacity * star.brightness));
+        
+        // Draw outer glow
+        const outerGlowGradient = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 6);
+        outerGlowGradient.addColorStop(0, `rgba(255, 182, 193, ${currentOpacity * 0.3})`);
+        outerGlowGradient.addColorStop(0.3, `rgba(255, 182, 193, ${currentOpacity * 0.2})`);
+        outerGlowGradient.addColorStop(1, "rgba(255, 182, 193, 0)");
+        
+        ctx.fillStyle = outerGlowGradient;
         ctx.beginPath();
-        ctx.arc(point.x, point.y, 4, 0, Math.PI * 2);
+        ctx.arc(star.x, star.y, star.size * 6, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Draw inner glow
+        const innerGlowGradient = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size * 3);
+        innerGlowGradient.addColorStop(0, `rgba(255, 182, 193, ${currentOpacity * 0.8})`);
+        innerGlowGradient.addColorStop(0.5, `rgba(255, 182, 193, ${currentOpacity * 0.4})`);
+        innerGlowGradient.addColorStop(1, "rgba(255, 182, 193, 0)");
+        
+        ctx.fillStyle = innerGlowGradient;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size * 3, 0, Math.PI * 2);
         ctx.fill();
 
-        // Glow effect
-        ctx.fillStyle = `rgba(251, 113, 133, ${pulse * 0.3})`;
+        // Draw star core with gradient
+        const coreGradient = ctx.createRadialGradient(star.x, star.y, 0, star.x, star.y, star.size);
+        coreGradient.addColorStop(0, `rgba(255, 255, 255, ${currentOpacity})`);
+        coreGradient.addColorStop(0.6, `rgba(255, 182, 193, ${currentOpacity})`);
+        coreGradient.addColorStop(1, `rgba(255, 150, 150, ${currentOpacity * 0.8})`);
+        
+        ctx.fillStyle = coreGradient;
         ctx.beginPath();
-        ctx.arc(point.x, point.y, 8, 0, Math.PI * 2);
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Add bright sparkle center
+        ctx.fillStyle = `rgba(255, 255, 255, ${currentOpacity * 0.9})`;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size * 0.3, 0, Math.PI * 2);
         ctx.fill();
       });
 
-      frame++;
-      requestAnimationFrame(animate);
+      animationRef.current = requestAnimationFrame(animate);
     };
 
     animate();
 
     const handleResize = () => {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
+      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      stars.splice(0, stars.length, ...createStars(canvas.offsetWidth, canvas.offsetHeight));
+      heartConstellation.splice(0, heartConstellation.length, ...createHeartConstellation(canvas.offsetWidth, canvas.offsetHeight));
     };
 
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   return (
-    <section id="stars" className="min-h-screen py-24 px-6 relative overflow-hidden bg-gradient-to-b from-[#0f0a1e] to-[#1a0f2e]">
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-16">
+    <section id="stars" className="py-16 px-6 relative overflow-hidden bg-gradient-to-b from-[#0a0a0a] via-[#1a0a2e] to-[#16213e] select-none">
+      <div className="max-w-4xl mx-auto relative z-10">
+        <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 mb-4">
             <Star className="w-8 h-8 text-yellow-400 fill-yellow-400 animate-float" />
-            <Heart className="w-8 h-8 text-primary fill-primary animate-float-slow" />
           </div>
-          <h2 className="text-5xl md:text-6xl font-playfair font-bold mb-4 text-white">
-            Our Constellation
+          <h2 className="text-4xl md:text-5xl font-playfair font-bold mb-3 bg-gradient-to-r from-blue-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
+            Starry Night
           </h2>
-          <p className="text-xl text-pink-200">
-            Like stars aligned, we were meant to find each other
+          <p className="text-lg text-blue-200/80">
+            A peaceful sky filled with countless twinkling stars
           </p>
         </div>
 
         <div className="relative">
           <canvas
             ref={canvasRef}
-            className="w-full h-[600px] rounded-3xl shadow-2xl"
+            className="w-full h-[500px] rounded-2xl shadow-xl border border-blue-200/20"
           />
-          
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="text-center">
-              <p className="text-white/80 text-lg font-playfair mb-2">
-                May 25, 2022
-              </p>
-              <p className="text-pink-300 text-sm">
-                The night the stars aligned for us
-              </p>
-            </div>
-          </div>
         </div>
 
-        <div className="mt-12 text-center">
-          <p className="text-pink-200 italic text-lg">
-            "Under the same sky, dreaming the same dreams" ✨
+        <div className="mt-6 text-center">
+          <p className="text-blue-200/70 italic text-base max-w-xl mx-auto">
+            "Under the vast starry sky, every star tells its own story."
           </p>
         </div>
       </div>
