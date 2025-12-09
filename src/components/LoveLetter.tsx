@@ -66,19 +66,21 @@ const LoveLetter = () => {
     const words = paragraph.text.split(' ');
     const displayWords = index === currentParagraph ? words.slice(0, visibleWords) : words;
     
-    const className = paragraph.isGreeting ? "mb-6" : 
-                     paragraph.isSignOff ? "pt-4" :
-                     paragraph.isHeart ? "font-playfair text-2xl text-primary" : "";
+    const getClassName = () => {
+      if (paragraph.isGreeting) return "mb-8 text-2xl font-playfair font-semibold text-gray-800";
+      if (paragraph.isSignOff) return "pt-8 mt-8 text-xl font-playfair font-medium text-right text-gray-700";
+      if (paragraph.isHeart) return "text-4xl text-center mt-4";
+      return "mb-6 leading-relaxed text-gray-700";
+    };
     
     return (
-      <p key={index} className={className}>
+      <p key={index} className={getClassName()}>
         {displayWords.map((word, wordIndex) => (
           <span 
             key={wordIndex} 
             className="inline-block mr-1 animate-fade-in"
             style={{
-              animationDelay: `${wordIndex * 50}ms`,
-              fontFamily: paragraph.isHeart ? 'inherit' : '"Dancing Script", cursive'
+              animationDelay: `${wordIndex * 50}ms`
             }}
           >
             {word}
@@ -90,9 +92,7 @@ const LoveLetter = () => {
 
   return (
     <section id="letter" className="py-24 px-6">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
-        
+      <style>{`        
         @keyframes fade-in {
           from {
             opacity: 0;
@@ -177,6 +177,18 @@ const LoveLetter = () => {
       `}</style>
       
       <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <Heart className="w-8 h-8 text-pink-400 fill-pink-400 animate-float" />
+          </div>
+          <h2 className="text-5xl md:text-6xl font-playfair font-bold mb-4 bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent">
+            A Letter From My Heart
+          </h2>
+          <p className="text-xl text-muted-foreground">
+            Words written with love, just for you
+          </p>
+        </div>
+
         {!isOpen ? (
           <div 
             className="relative mx-auto w-80 h-48 envelope"
@@ -236,7 +248,7 @@ const LoveLetter = () => {
                   </div>
                 </div>
 
-                <div className="space-y-6 text-lg leading-relaxed text-gray-800">
+                <div className="space-y-6 text-lg leading-relaxed text-gray-800 font-serif">
                   {letterContent.map((paragraph, index) => renderParagraph(paragraph, index))}
                 </div>
               </div>

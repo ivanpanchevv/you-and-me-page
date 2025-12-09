@@ -14,6 +14,7 @@ const Navigation = ({ activeSection, onNavigate }: NavigationProps) => {
     { id: "gallery", icon: Image, label: "Gallery" },
     { id: "stars", icon: Star, label: "Stars" },
     { id: "heart-lock", icon: Heart, label: "Heart Lock" },
+    { id: "pet", icon: "🐶", label: "Virtual Pet" },
     { id: "letter", icon: Mail, label: "Love Letter" },
   ];
 
@@ -41,7 +42,11 @@ const Navigation = ({ activeSection, onNavigate }: NavigationProps) => {
                       : "text-muted-foreground hover:text-foreground hover:bg-accent"
                   }`}
                 >
-                  <Icon className="w-4 h-4" />
+                  {typeof Icon === "string" ? (
+                    <span className="w-4 h-4 text-sm">{Icon}</span>
+                  ) : (
+                    <Icon className="w-4 h-4" />
+                  )}
                   <span className="text-sm font-medium">{section.label}</span>
                 </button>
               );

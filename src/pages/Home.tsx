@@ -10,6 +10,7 @@ import JourneyMap from "@/components/sections/JourneyMap";
 import MediaGallery from "@/components/sections/MediaGallery";
 import StarMap from "@/components/sections/StarMap";
 import HeartLock from "@/components/sections/HeartLock";
+import VirtualPet from "@/components/VirtualPet";
 import LoveLetter from "@/components/LoveLetter";
 
 const Home = () => {
@@ -26,7 +27,7 @@ const Home = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["home", "messages", "timeline", "journey", "gallery", "stars", "heart-lock", "letter"];
+      const sections = ["home", "messages", "timeline", "journey", "gallery", "stars", "heart-lock", "pet", "letter"];
       const scrollPosition = window.scrollY + 100;
 
       for (const sectionId of sections) {
@@ -73,6 +74,7 @@ const Home = () => {
         <MediaGallery />
         <StarMap />
         <HeartLock />
+        <VirtualPet />
         <LoveLetter />
       </div>
     </div>
