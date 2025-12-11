@@ -1,42 +1,63 @@
 import { useState } from "react";
-import { Heart, Calendar, MapPin, Star } from "lucide-react";
+import { Heart, Calendar, MapPin, Star, Palette, Plane, Mountain, Waves, Music, Zap, Car } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 const milestones = [
   {
-    date: "June 15, 2023",
+    date: "January 16, 2023",
     title: "Our First Date",
-    description: "The day everything changed. Coffee turned into hours of conversation.",
+    description: "The day everything changed. Amazing pasta and endless conversation.",
     icon: Heart,
-    location: "That Cozy Café",
+    location: "Spaghetti Kitchen",
   },
   {
-    date: "July 4, 2023",
-    title: "First 'I Love You'",
-    description: "Under the fireworks, I knew I had to tell you how I felt.",
-    icon: Star,
-    location: "City Park",
+    date: "January 27, 2023",
+    title: "Drawing Flowers on My Wall",
+    description: "You made my space more beautiful, just like you make my life.",
+    icon: Palette,
+    location: "Home",
   },
   {
-    date: "September 10, 2023",
-    title: "Our First Trip",
-    description: "Adventures are better with you. The beginning of many journeys.",
-    icon: MapPin,
-    location: "The Mountains",
+    date: "April 14, 2023",
+    title: "Trip to France",
+    description: "Our first adventure abroad together. Unforgettable memories.",
+    icon: Plane,
+    location: "France",
   },
   {
-    date: "December 25, 2023",
-    title: "Best Holiday Ever",
-    description: "Celebrating together made everything more special.",
-    icon: Calendar,
-    location: "Home Sweet Home",
+    date: "July 8, 2023",
+    title: "Picnic in the Mountain",
+    description: "Nature, good food, and your company - perfect combination.",
+    icon: Mountain,
+    location: "Vitosha Mountain",
   },
   {
-    date: "Today",
-    title: "Every Day With You",
-    description: "And many more beautiful moments to come...",
-    icon: Heart,
-    location: "Wherever We Are",
+    date: "July 15, 2023",
+    title: "First Sea Together",
+    description: "Waves, sunset, and falling deeper in love with you.",
+    icon: Waves,
+    location: "Camping Gradina",
+  },
+  {
+    date: "August 6, 2023",
+    title: "Concert in Prague",
+    description: "Music, dancing, and creating magical memories in a beautiful city.",
+    icon: Music,
+    location: "Prague",
+  },
+  {
+    date: "August 23, 2024",
+    title: "Horse Riding",
+    description: "New adventures and conquering fears together.",
+    icon: Zap,
+    location: "Voynegovtsi",
+  },
+  {
+    date: "July 21, 2025",
+    title: "First Car Trip Together",
+    description: "Freedom on the road, exploring paradise with you.",
+    icon: Car,
+    location: "Corfu",
   },
 ];
 

@@ -1,0 +1,56 @@
+/* Performance optimizations */
+
+/* Reduce animation duration for better performance */
+.animate-float {
+  animation-duration: 3s;
+}
+
+.animate-float-slow {
+  animation-duration: 4s;
+}
+
+/* Hardware acceleration for transforms */
+.group:hover .group-hover\\:scale-110,
+.group:hover .group-hover\\:scale-105,
+.hover\\:scale-125:hover,
+.hover\\:-translate-y-2:hover {
+  transform: translateZ(0);
+}
+
+/* Optimize transitions */
+.transition-all {
+  transition-property: transform, opacity, box-shadow;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-slow,
+  .animate-bounce {
+    animation: none;
+  }
+  
+  .transition-all,
+  .transition-transform,
+  .transition-opacity {
+    transition: none;
+  }
+  
+  .group:hover .group-hover\\:scale-110,
+  .group:hover .group-hover\\:scale-105,
+  .hover\\:scale-125:hover {
+    transform: none;
+  }
+}
+
+/* Image optimization */
+img {
+  image-rendering: optimizeSpeed;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
+}
+
+/* Contain layout shifts */
+.aspect-square {
+  contain: layout style;
+}

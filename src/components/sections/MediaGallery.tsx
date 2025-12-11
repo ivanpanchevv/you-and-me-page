@@ -2,60 +2,80 @@ import { useState } from "react";
 import { Heart, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
+// Import images
+import firstDateImage from "@/assets/first-date-photo.jpg";
+import birthdayImage from "@/assets/birthday-celebration.jpg";
+import sunriseImage from "@/assets/sunrise-together.jpg";
+import concertImage from "@/assets/concert-together.jpg";
+import cookingImage from "@/assets/cooking-together.jpg";
+import sunsetImage from "@/assets/sunset-together.jpg";
+import firstTripImage from "@/assets/first-trip.jpg";
+import lastTripImage from "@/assets/last-trip.jpg";
+import seaImage from "@/assets/sea-together.jpg";
+
 const memories = [
   {
     emoji: "📸",
     title: "First Date",
     description: "That nervous smile I'll never forget",
     color: "from-pink-500/20 to-rose-500/20",
+    image: firstDateImage,
   },
   {
     emoji: "🎂",
     title: "Your Birthday",
     description: "Making your day special",
     color: "from-purple-500/20 to-pink-500/20",
+    image: birthdayImage,
   },
   {
     emoji: "🌅",
     title: "Sunrise Together",
     description: "Worth waking up early for",
     color: "from-orange-500/20 to-yellow-500/20",
+    image: sunriseImage,
   },
   {
     emoji: "🎭",
-    title: "Concert Night",
+    title: "Concert Together",
     description: "Dancing like nobody's watching",
     color: "from-blue-500/20 to-purple-500/20",
+    image: concertImage,
   },
   {
     emoji: "🍝",
     title: "Cooking Together",
     description: "Messy kitchen, happy hearts",
     color: "from-red-500/20 to-orange-500/20",
+    image: cookingImage,
   },
   {
-    emoji: "🌟",
-    title: "Stargazing",
-    description: "You outshine them all",
-    color: "from-indigo-500/20 to-purple-500/20",
+    emoji: "🌇",
+    title: "Sunset Together",
+    description: "Golden hour with my favorite person",
+    color: "from-amber-500/20 to-orange-500/20",
+    image: sunsetImage,
   },
   {
-    emoji: "🎄",
-    title: "First Holiday",
-    description: "Creating traditions together",
-    color: "from-green-500/20 to-red-500/20",
+    emoji: "✈️",
+    title: "First Trip",
+    description: "Adventures begin with you",
+    color: "from-sky-500/20 to-indigo-500/20",
+    image: firstTripImage,
   },
   {
-    emoji: "☔",
-    title: "Dancing in Rain",
-    description: "Perfect imperfect moment",
-    color: "from-blue-500/20 to-teal-500/20",
+    emoji: "🗺️",
+    title: "Last Trip",
+    description: "Making memories around the world",
+    color: "from-green-500/20 to-teal-500/20",
+    image: lastTripImage,
   },
   {
-    emoji: "🎨",
-    title: "Art Museum Day",
-    description: "You're my favorite masterpiece",
-    color: "from-amber-500/20 to-rose-500/20",
+    emoji: "🌊",
+    title: "Sea Together",
+    description: "Waves and endless horizons",
+    color: "from-blue-500/20 to-cyan-500/20",
+    image: seaImage,
   },
 ];
 
@@ -81,17 +101,40 @@ const MediaGallery = () => {
               onClick={() => setSelectedImage(index)}
               className="group cursor-pointer overflow-hidden hover:-translate-y-2 transition-all duration-300 shadow-soft border-border/50"
             >
-              <div className={`relative aspect-square bg-gradient-to-br ${memory.color} p-6 flex flex-col items-center justify-center text-center`}>
-                <div className="text-6xl md:text-7xl mb-4 group-hover:scale-110 transition-transform">
-                  {memory.emoji}
-                </div>
-                <h3 className="font-playfair font-bold text-lg md:text-xl text-foreground mb-2">
-                  {memory.title}
-                </h3>
-                <p className="text-sm text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                  {memory.description}
-                </p>
-                <Heart className="absolute top-3 right-3 w-5 h-5 text-primary/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative aspect-square overflow-hidden">
+                {memory.image ? (
+                  <>
+                    <img 
+                      src={memory.image} 
+                      alt={memory.title}
+                      loading="lazy"
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 will-change-transform"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                    <div className="absolute inset-0 p-6 flex flex-col items-center justify-end text-center">
+                      <h3 className="font-playfair font-bold text-lg md:text-xl text-white mb-2">
+                        {memory.title}
+                      </h3>
+                      <p className="text-sm text-white/90 opacity-0 group-hover:opacity-100 transition-opacity">
+                        {memory.description}
+                      </p>
+                      <Heart className="absolute top-3 right-3 w-5 h-5 text-white/80 opacity-0 group-hover:opacity-100 transition-opacity fill-white/80" />
+                    </div>
+                  </>
+                ) : (
+                  <div className={`relative h-full bg-gradient-to-br ${memory.color} p-6 flex flex-col items-center justify-center text-center`}>
+                    <div className="text-6xl md:text-7xl mb-4 group-hover:scale-110 transition-transform">
+                      {memory.emoji}
+                    </div>
+                    <h3 className="font-playfair font-bold text-lg md:text-xl text-foreground mb-2">
+                      {memory.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                      {memory.description}
+                    </p>
+                    <Heart className="absolute top-3 right-3 w-5 h-5 text-primary/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                )}
               </div>
             </Card>
           ))}
@@ -109,18 +152,37 @@ const MediaGallery = () => {
             >
               <X className="w-8 h-8" />
             </button>
-            <div className="max-w-2xl w-full">
-              <div className={`bg-gradient-to-br ${memories[selectedImage].color} rounded-3xl p-12 text-center`}>
-                <div className="text-8xl mb-6 animate-float">
-                  {memories[selectedImage].emoji}
+            <div className="max-w-4xl w-full">
+              {memories[selectedImage].image ? (
+                <div className="relative rounded-3xl overflow-hidden">
+                  <img 
+                    src={memories[selectedImage].image} 
+                    alt={memories[selectedImage].title}
+                    loading="eager"
+                    className="w-full h-auto max-h-[80vh] object-contain rounded-3xl"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-8 text-center">
+                    <h3 className="text-4xl font-playfair font-bold text-white mb-4">
+                      {memories[selectedImage].title}
+                    </h3>
+                    <p className="text-xl text-white/90">
+                      {memories[selectedImage].description}
+                    </p>
+                  </div>
                 </div>
-                <h3 className="text-4xl font-playfair font-bold text-foreground mb-4">
-                  {memories[selectedImage].title}
-                </h3>
-                <p className="text-xl text-muted-foreground">
-                  {memories[selectedImage].description}
-                </p>
-              </div>
+              ) : (
+                <div className={`bg-gradient-to-br ${memories[selectedImage].color} rounded-3xl p-12 text-center`}>
+                  <div className="text-8xl mb-6 animate-float">
+                    {memories[selectedImage].emoji}
+                  </div>
+                  <h3 className="text-4xl font-playfair font-bold text-foreground mb-4">
+                    {memories[selectedImage].title}
+                  </h3>
+                  <p className="text-xl text-muted-foreground">
+                    {memories[selectedImage].description}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         )}
