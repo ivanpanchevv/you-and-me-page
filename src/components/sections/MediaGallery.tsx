@@ -107,7 +107,6 @@ const MediaGallery = () => {
                     <img 
                       src={memory.image} 
                       alt={memory.title}
-                      loading="lazy"
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 will-change-transform"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -158,7 +157,6 @@ const MediaGallery = () => {
                   <img 
                     src={memories[selectedImage].image} 
                     alt={memories[selectedImage].title}
-                    loading="eager"
                     className="w-full h-auto max-h-[80vh] object-contain rounded-3xl"
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-8 text-center">
