@@ -26,17 +26,17 @@ const LoveLetter = () => {
       if (visibleWords < words.length) {
         const timer = setTimeout(() => {
           setVisibleWords(prev => prev + 1);
-        }, paragraph.isGreeting || paragraph.isSignOff ? 200 : 100);
+        }, paragraph.isHeart ? 200 : paragraph.isGreeting || paragraph.isSignOff ? 100 : 80);
         return () => clearTimeout(timer);
       } else if (currentParagraph < letterContent.length - 1) {
         const timer = setTimeout(() => {
           setCurrentParagraph(prev => prev + 1);
           setVisibleWords(0);
-        }, 500);
+        }, paragraph.isHeart ? 600 : 400);
         return () => clearTimeout(timer);
       }
     }
-  }, [isOpen, visibleWords, currentParagraph]);
+  }, [isOpen, visibleWords, currentParagraph, letterContent]);
 
   const handleEnvelopeClick = () => {
     if (!isOpen && !isAnimating) {
@@ -79,15 +79,19 @@ const LoveLetter = () => {
       <p key={index} className={getClassName()}>
         {displayWords.map((word, wordIndex) => (
           <span 
-            key={wordIndex} 
-            className="inline-block mr-1 animate-fade-in"
+            key={`${index}-${wordIndex}`} 
+            className="inline-block mr-1 animate-word-bloom opacity-0"
             style={{
-              animationDelay: `${wordIndex * 50}ms`
+              animationDelay: `${wordIndex * (paragraph.isHeart ? 200 : paragraph.isGreeting || paragraph.isSignOff ? 100 : 80)}ms`,
+              animationFillMode: 'forwards'
             }}
           >
             {word}
           </span>
         ))}
+        {index === currentParagraph && visibleWords < words.length && (
+          <span className="inline-block w-0.5 h-5 bg-pink-400 ml-1 animate-pulse" />
+        )}
       </p>
     );
   };
@@ -103,6 +107,21 @@ const LoveLetter = () => {
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+
+        @keyframes word-bloom {
+          0% {
+            opacity: 0;
+            transform: translateY(8px) scale(0.9);
+          }
+          40% {
+            opacity: 0.8;
+            transform: translateY(-2px) scale(1.03);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
           }
         }
 
@@ -133,6 +152,11 @@ const LoveLetter = () => {
 
         .animate-fade-in {
           animation: fade-in 0.5s ease-out forwards;
+          opacity: 0;
+        }
+
+        .animate-word-bloom {
+          animation: word-bloom 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
           opacity: 0;
         }
 
@@ -233,9 +257,12 @@ const LoveLetter = () => {
             {/* Close Button */}
             <button
               onClick={handleCloseLetter}
-              className="absolute top-4 right-4 z-10 w-10 h-10 sm:w-8 sm:h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors shadow-md"
+              className="fixed top-safe-area-inset-top right-4 z-[60] w-12 h-12 sm:w-10 sm:h-10 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors shadow-lg border border-gray-200"
+              style={{
+                top: 'max(1rem, env(safe-area-inset-top, 16px))'
+              }}
             >
-              <X className="w-5 h-5 sm:w-4 sm:h-4 text-gray-600" />
+              <X className="w-6 h-6 sm:w-4 sm:h-4 text-gray-600" />
             </button>
 
             <div className="p-6 sm:p-12 relative overflow-hidden">
