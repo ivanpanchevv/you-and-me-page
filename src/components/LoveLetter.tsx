@@ -1,18 +1,20 @@
 import { Heart, Mail, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const LoveLetter = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [visibleWords, setVisibleWords] = useState(0);
   const [currentParagraph, setCurrentParagraph] = useState(0);
   
   const letterContent = [
-    { text: "My Dearest,", isGreeting: true },
-    { text: "Words can hardly capture what you mean to me, but I'll try anyway. From the moment you came into my life, everything changed. The world became brighter, colors more vivid, and every day an adventure worth living." },
-    { text: "You inspire me to be better, to dream bigger, and to love deeper. Your presence in my life is a gift I'm grateful for every single day. The way you see the world, your strength, your gentleness, your laughter – everything about you is a masterpiece." },
-    { text: "Thank you for being you, for choosing me, and for all the beautiful moments we've shared. This is just the beginning of our story, and I can't wait to write more chapters together." },
-    { text: "Forever yours,", isSignOff: true },
+    { text: t("loveLetter.content.greeting"), isGreeting: true },
+    { text: t("loveLetter.content.paragraph1") },
+    { text: t("loveLetter.content.paragraph2") },
+    { text: t("loveLetter.content.paragraph3") },
+    { text: t("loveLetter.content.signOff"), isSignOff: true },
     { text: "❤️", isHeart: true }
   ];
 
@@ -67,10 +69,10 @@ const LoveLetter = () => {
     const displayWords = index === currentParagraph ? words.slice(0, visibleWords) : words;
     
     const getClassName = () => {
-      if (paragraph.isGreeting) return "mb-8 text-2xl font-playfair font-semibold text-gray-800";
-      if (paragraph.isSignOff) return "pt-8 mt-8 text-xl font-playfair font-medium text-right text-gray-700";
-      if (paragraph.isHeart) return "text-4xl text-center mt-4";
-      return "mb-6 leading-relaxed text-gray-700";
+      if (paragraph.isGreeting) return "mb-6 sm:mb-8 text-xl sm:text-2xl font-playfair font-semibold text-gray-800";
+      if (paragraph.isSignOff) return "pt-6 sm:pt-8 mt-6 sm:mt-8 text-lg sm:text-xl font-playfair font-medium text-right text-gray-700";
+      if (paragraph.isHeart) return "text-3xl sm:text-4xl text-center mt-4";
+      return "mb-4 sm:mb-6 leading-relaxed text-gray-700";
     };
     
     return (
@@ -182,29 +184,29 @@ const LoveLetter = () => {
             <Heart className="w-8 h-8 text-pink-400 fill-pink-400 animate-float" />
           </div>
           <h2 className="text-5xl md:text-6xl font-playfair font-bold mb-4 bg-gradient-to-r from-pink-300 via-rose-300 to-red-300 bg-clip-text text-transparent">
-            A Letter From My Heart
+            {t("loveLetter.title")}
           </h2>
           <p className="text-xl text-muted-foreground">
-            Words written with love, just for you
+            {t("loveLetter.subtitle")}
           </p>
         </div>
 
         {!isOpen ? (
           <div 
-            className="relative mx-auto w-80 h-48 envelope"
+            className="relative mx-auto w-64 h-40 sm:w-80 sm:h-48 envelope"
             onClick={handleEnvelopeClick}
           >
             <div className={`absolute inset-0 bg-gradient-to-br from-pink-100 to-pink-200 rounded-lg shadow-2xl border border-pink-300 ${isOpen ? 'envelope-open' : ''}`}>
-              <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-br from-pink-200 to-pink-300 rounded-t-lg envelope-flap border-b border-pink-400" 
+              <div className="absolute inset-x-0 top-0 h-16 sm:h-24 bg-gradient-to-br from-pink-200 to-pink-300 rounded-t-lg envelope-flap border-b border-pink-400" 
                    style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 50% 50%, 0 100%)' }}>
                 <div className="flex justify-center items-center h-full">
-                  <Heart className="w-8 h-8 text-pink-600 fill-pink-600" />
+                  <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-pink-600 fill-pink-600" />
                 </div>
               </div>
               
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 text-pink-700">
-                <Mail className="w-5 h-5" />
-                <span className="text-sm font-semibold">Click to open</span>
+              <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 text-pink-700">
+                <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="text-xs sm:text-sm font-semibold">{t("loveLetter.openButton")}</span>
               </div>
             </div>
           </div>
@@ -212,7 +214,7 @@ const LoveLetter = () => {
 
         <div className="mt-12 text-center">
           <p className="text-muted-foreground italic">
-            Made with love, just for you
+            {t("loveLetter.footer")}
           </p>
         </div>
       </div>
@@ -231,12 +233,12 @@ const LoveLetter = () => {
             {/* Close Button */}
             <button
               onClick={handleCloseLetter}
-              className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+              className="absolute top-4 right-4 z-10 w-10 h-10 sm:w-8 sm:h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors shadow-md"
             >
-              <X className="w-4 h-4 text-gray-600" />
+              <X className="w-5 h-5 sm:w-4 sm:h-4 text-gray-600" />
             </button>
 
-            <div className="p-12 relative overflow-hidden">
+            <div className="p-6 sm:p-12 relative overflow-hidden">
               <Heart className="absolute top-4 left-4 w-8 h-8 text-pink-200 animate-float" />
               <Heart className="absolute bottom-4 right-4 w-6 h-6 text-pink-200 animate-float-slow" />
               
@@ -244,11 +246,11 @@ const LoveLetter = () => {
                 <div className="flex justify-center mb-8">
                   <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-pink-400 to-rose-500">
                     <Heart className="w-5 h-5 text-white fill-white" />
-                    <span className="text-white font-semibold">A Note For You</span>
+                    <span className="text-white font-semibold">{t("loveLetter.noteLabel")}</span>
                   </div>
                 </div>
 
-                <div className="space-y-6 text-lg leading-relaxed text-gray-800 font-serif">
+                <div className="space-y-4 sm:space-y-6 text-base sm:text-lg leading-relaxed text-gray-800 font-serif">
                   {letterContent.map((paragraph, index) => renderParagraph(paragraph, index))}
                 </div>
               </div>

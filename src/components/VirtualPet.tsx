@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Heart, Cookie, Hand } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface PetStats {
   happiness: number;
@@ -10,6 +11,7 @@ interface PetStats {
 }
 
 const VirtualPet = () => {
+  const { t } = useTranslation();
   const [petStats, setPetStats] = useState<PetStats>({
     happiness: 80,
     hunger: 60,
@@ -121,12 +123,12 @@ const VirtualPet = () => {
   const getStatusMessage = () => {
     const mood = getPetMood();
     switch (mood) {
-      case "very-happy": return "I'm so happy! Life is great! 🌟";
-      case "happy": return "I'm feeling good! Thanks for taking care of me! 😊";
-      case "hungry": return "I'm getting hungry... Could you feed me? 🍖";
-      case "sleepy": return "I'm feeling tired... Maybe time for a nap? 💤";
-      case "sad": return "I need some love and attention... 💙";
-      default: return "Just chilling here! What should we do? 🐾";
+      case "very-happy": return t("virtualPet.moods.veryHappy");
+      case "happy": return t("virtualPet.moods.happy");
+      case "hungry": return t("virtualPet.moods.hungry");
+      case "sleepy": return t("virtualPet.moods.sleepy");
+      case "sad": return t("virtualPet.moods.sad");
+      default: return t("virtualPet.moods.neutral");
     }
   };
 
@@ -529,10 +531,10 @@ const VirtualPet = () => {
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8 sm:mb-16">
           <h2 className="text-3xl sm:text-5xl md:text-6xl font-playfair font-bold mb-2 sm:mb-4 text-foreground">
-            Meet Our Virtual Pup
+            {t("virtualPet.title")}
           </h2>
           <p className="text-lg sm:text-xl text-muted-foreground">
-            Take care of our adorable companion together!
+            {t("virtualPet.subtitle")}
           </p>
         </div>
 
@@ -550,7 +552,7 @@ const VirtualPet = () => {
               >
                 <Cookie className="w-5 h-5 sm:w-5 sm:h-5" />
                 <span className="min-w-[70px] text-left">
-                  {isEating ? "Eating..." : "Feed"}
+                  {isEating ? t("virtualPet.feedingButton") : t("virtualPet.feedButton")}
                 </span>
               </button>
 
@@ -561,7 +563,7 @@ const VirtualPet = () => {
               >
                 <Hand className="w-5 h-5 sm:w-5 sm:h-5" />
                 <span className="min-w-[70px] text-left">
-                  {isBeingPetted ? "Petting..." : "Pet"}
+                  {isBeingPetted ? t("virtualPet.pettingButton") : t("virtualPet.petButton")}
                 </span>
               </button>
 
@@ -572,7 +574,7 @@ const VirtualPet = () => {
               >
                 <span className="w-5 h-5 sm:w-5 sm:h-5 flex items-center justify-center text-sm">💤</span>
                 <span className="min-w-[70px] text-left">
-                  {isSleeping ? "Sleeping..." : "Sleep"}
+                  {isSleeping ? t("virtualPet.sleepingButton") : t("virtualPet.sleepButton")}
                 </span>
               </button>
             </div>
@@ -588,9 +590,9 @@ const VirtualPet = () => {
           {/* Stats Display */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4">
             {[
-              { label: "Happiness", value: petStats.happiness, icon: "❤️" },
-              { label: "Hunger", value: petStats.hunger, icon: "🍖" },
-              { label: "Energy", value: petStats.energy, icon: "⚡" },
+              { label: t("virtualPet.happiness"), value: petStats.happiness, icon: "❤️" },
+              { label: t("virtualPet.hunger"), value: petStats.hunger, icon: "🍖" },
+              { label: t("virtualPet.energy"), value: petStats.energy, icon: "⚡" },
             ].map((stat) => (
               <div key={stat.label} className="bg-gray-50 rounded-2xl p-3 sm:p-4 text-center">
                 <div className="text-2xl sm:text-2xl mb-2">{stat.icon}</div>
@@ -611,14 +613,14 @@ const VirtualPet = () => {
           {/* Care Instructions */}
           <div className="mt-8 text-center">
             <p className="text-gray-600 text-sm">
-              💡 <strong>Pro tip:</strong> Click on the dog to give it love and attention!
+              💡 <strong>{t("virtualPet.proTip")}</strong>
             </p>
           </div>
         </div>
 
         <div className="mt-6 sm:mt-8 text-center">
           <p className="text-sm sm:text-base text-muted-foreground italic">
-            "A pet's love is pure and unconditional" 🐾
+            "{t("virtualPet.quote")}" 🐾
           </p>
         </div>
       </div>

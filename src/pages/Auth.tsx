@@ -4,10 +4,13 @@ import { Heart, Lock } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const Auth = () => {
   const [date, setDate] = useState("");
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // Set your special date here (format: YYYY-MM-DD)
   const SPECIAL_DATE = "2005-12-16"; // Change this to your actual date!
@@ -18,10 +21,10 @@ const Auth = () => {
     if (date === SPECIAL_DATE) {
       localStorage.setItem("authenticated", "true");
       localStorage.setItem("authDate", new Date().toISOString());
-      toast.success("Welcome, my love! ❤️");
+      toast.success(t("auth.successMessage"));
       setTimeout(() => navigate("/home"), 500);
     } else {
-      toast.error("Hmm, that's not quite right. Think about our special day...");
+      toast.error(t("auth.errorMessage"));
       setDate("");
     }
   };
@@ -46,6 +49,11 @@ const Auth = () => {
         ))}
       </div>
 
+      {/* Language Switcher */}
+      <div className="absolute top-4 right-4 z-20">
+        <LanguageSwitcher />
+      </div>
+      
       {/* Auth Card */}
       <div className="relative z-10 w-full max-w-md mx-4">
         <div className="bg-card/80 backdrop-blur-xl rounded-3xl shadow-soft p-8 border border-border/50">
@@ -54,17 +62,17 @@ const Auth = () => {
               <Lock className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-4xl font-playfair font-bold mb-2 text-foreground">
-              A Special Date
+              {t("auth.title")}
             </h1>
             <p className="text-muted-foreground">
-              Enter our special day to unlock your surprise
+              {t("auth.subtitle")}
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="date" className="block text-sm font-medium mb-2 text-foreground">
-                What's the date? 📅
+                {t("auth.label")}
               </label>
               <Input
                 id="date"
@@ -81,14 +89,14 @@ const Auth = () => {
               className="w-full gradient-romantic text-white hover:opacity-90 transition-opacity"
               size="lg"
             >
-              Unlock My Surprise
+              {t("auth.button")}
               <Heart className="ml-2 w-5 h-5 fill-white" />
             </Button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground italic">
-              Hint: Think about when we first...
+              {t("auth.hint")}
             </p>
           </div>
         </div>

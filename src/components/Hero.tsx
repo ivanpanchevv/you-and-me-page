@@ -1,7 +1,10 @@
 import { Heart } from "lucide-react";
 import heroImage from "@/assets/hero-romantic.jpg";
+import { useTranslation } from "react-i18next";
 
 const Hero = () => {
+  const { t } = useTranslation();
+  
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
@@ -26,11 +29,10 @@ const Hero = () => {
           <Heart className="w-16 h-16 text-primary fill-primary" />
         </div>
         <h1 className="text-6xl md:text-8xl font-playfair font-bold mb-6 text-foreground">
-          For You, My Love
+          {t("hero.title")}
         </h1>
         <p className="text-xl md:text-2xl text-muted-foreground font-light leading-relaxed max-w-2xl mx-auto">
-          Every moment with you is a treasure. This little corner of the internet is my way of 
-          showing you just how much you mean to me. ❤️
+          {t("hero.subtitle")}
         </p>
       </div>
 

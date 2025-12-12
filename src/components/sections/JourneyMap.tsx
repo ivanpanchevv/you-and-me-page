@@ -1,6 +1,7 @@
 import { Heart, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // Import images
 import corfuImage from "@/assets/corfu.jpg";
@@ -10,57 +11,58 @@ import antwerpImage from "@/assets/antwerp.jpg";
 import borovetsImage from "@/assets/borovets.jpg";
 import sozopolImage from "@/assets/sozopol.jpg";
 
-const places = [
-  {
-    name: "Corfu",
-    description: "Island paradise with crystal waters",
-    emoji: "🏝️",
-    image: corfuImage,
-  },
-  {
-    name: "Petkovo",
-    description: "Mountain adventures and fresh air",
-    emoji: "🏔️",
-    image: petkovoImage,
-  },
-  {
-    name: "Nimes",
-    description: "French charm and ancient history",
-    emoji: "🏛️",
-    image: nimesImage,
-  },
-  {
-    name: "Antwerp",
-    description: "Belgian beauty and diamond city",
-    emoji: "💎",
-    image: antwerpImage,
-  },
-  {
-    name: "Borovets",
-    description: "Snowy peaks and mountain magic",
-    emoji: "⛷️",
-    image: borovetsImage,
-  },
-  {
-    name: "Sozopol",
-    description: "Seaside memories and old town magic",
-    emoji: "🌊",
-    image: sozopolImage,
-  },
-];
-
 const JourneyMap = () => {
+  const { t } = useTranslation();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  const places = [
+    {
+      name: t("journeyMap.places.0.name"),
+      description: t("journeyMap.places.0.description"),
+      emoji: "🏝️",
+      image: corfuImage,
+    },
+    {
+      name: t("journeyMap.places.1.name"),
+      description: t("journeyMap.places.1.description"),
+      emoji: "🏔️",
+      image: petkovoImage,
+    },
+    {
+      name: t("journeyMap.places.2.name"),
+      description: t("journeyMap.places.2.description"),
+      emoji: "🏛️",
+      image: nimesImage,
+    },
+    {
+      name: t("journeyMap.places.3.name"),
+      description: t("journeyMap.places.3.description"),
+      emoji: "💎",
+      image: antwerpImage,
+    },
+    {
+      name: t("journeyMap.places.4.name"),
+      description: t("journeyMap.places.4.description"),
+      emoji: "⛷️",
+      image: borovetsImage,
+    },
+    {
+      name: t("journeyMap.places.5.name"),
+      description: t("journeyMap.places.5.description"),
+      emoji: "🌊",
+      image: sozopolImage,
+    },
+  ];
 
   return (
     <section id="journey" className="min-h-screen py-24 px-6 gradient-soft">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl font-playfair font-bold mb-4 text-foreground">
-            Places We've Been Together
+            {t("journeyMap.title")}
           </h2>
           <p className="text-xl text-muted-foreground">
-            Every journey is an adventure with you
+            {t("journeyMap.subtitle")}
           </p>
         </div>
 
@@ -114,7 +116,7 @@ const JourneyMap = () => {
 
         <div className="text-center">
           <p className="text-lg text-muted-foreground italic">
-            "Not all who wander are lost - especially when wandering with you" 🗺️
+            "{t("journeyMap.quote")}"
           </p>
         </div>
       </div>

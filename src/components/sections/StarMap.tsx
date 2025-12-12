@@ -1,7 +1,9 @@
 import { useEffect, useRef } from "react";
 import { Star } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const StarMap = () => {
+  const { t } = useTranslation();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
 
@@ -226,10 +228,10 @@ const StarMap = () => {
             <Star className="w-8 h-8 text-yellow-400 fill-yellow-400 animate-float" />
           </div>
           <h2 className="text-4xl md:text-5xl font-playfair font-bold mb-3 bg-gradient-to-r from-blue-300 via-purple-300 to-indigo-300 bg-clip-text text-transparent">
-            Starry Night
+            {t("starMap.title")}
           </h2>
           <p className="text-lg text-blue-200/80">
-            A peaceful sky filled with countless twinkling stars
+            {t("starMap.subtitle")}
           </p>
         </div>
 
@@ -242,7 +244,7 @@ const StarMap = () => {
 
         <div className="mt-6 text-center">
           <p className="text-blue-200/70 italic text-base max-w-xl mx-auto">
-            "Under the vast starry sky, every star tells its own story."
+            "{t("starMap.quote")}"
           </p>
         </div>
       </div>

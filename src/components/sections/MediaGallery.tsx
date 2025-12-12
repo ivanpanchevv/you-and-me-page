@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { Heart, X } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { Heart, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { useTranslation } from "react-i18next";
 
 // Import images
 import firstDateImage from "@/assets/first-date-photo.jpg";
@@ -13,84 +14,143 @@ import firstTripImage from "@/assets/first-trip.jpg";
 import lastTripImage from "@/assets/last-trip.jpg";
 import seaImage from "@/assets/sea-together.jpg";
 
-const memories = [
-  {
-    emoji: "📸",
-    title: "First Date",
-    description: "That nervous smile I'll never forget",
-    color: "from-pink-500/20 to-rose-500/20",
-    image: firstDateImage,
-  },
-  {
-    emoji: "🎂",
-    title: "Your Birthday",
-    description: "Making your day special",
-    color: "from-purple-500/20 to-pink-500/20",
-    image: birthdayImage,
-  },
-  {
-    emoji: "🌅",
-    title: "Sunrise Together",
-    description: "Worth waking up early for",
-    color: "from-orange-500/20 to-yellow-500/20",
-    image: sunriseImage,
-  },
-  {
-    emoji: "🎭",
-    title: "Concert Together",
-    description: "Dancing like nobody's watching",
-    color: "from-blue-500/20 to-purple-500/20",
-    image: concertImage,
-  },
-  {
-    emoji: "🍝",
-    title: "Cooking Together",
-    description: "Messy kitchen, happy hearts",
-    color: "from-red-500/20 to-orange-500/20",
-    image: cookingImage,
-  },
-  {
-    emoji: "🌇",
-    title: "Sunset Together",
-    description: "Golden hour with my favorite person",
-    color: "from-amber-500/20 to-orange-500/20",
-    image: sunsetImage,
-  },
-  {
-    emoji: "✈️",
-    title: "First Trip",
-    description: "Adventures begin with you",
-    color: "from-sky-500/20 to-indigo-500/20",
-    image: firstTripImage,
-  },
-  {
-    emoji: "🗺️",
-    title: "Last Trip",
-    description: "Making memories around the world",
-    color: "from-green-500/20 to-teal-500/20",
-    image: lastTripImage,
-  },
-  {
-    emoji: "🌊",
-    title: "Sea Together",
-    description: "Waves and endless horizons",
-    color: "from-blue-500/20 to-cyan-500/20",
-    image: seaImage,
-  },
-];
-
 const MediaGallery = () => {
+  const { t } = useTranslation();
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  const memories = [
+    {
+      emoji: "📸",
+      title: t("mediaGallery.memories.0.title"),
+      description: t("mediaGallery.memories.0.description"),
+      color: "from-pink-500/20 to-rose-500/20",
+      image: firstDateImage,
+    },
+    {
+      emoji: "🎂",
+      title: t("mediaGallery.memories.1.title"),
+      description: t("mediaGallery.memories.1.description"),
+      color: "from-purple-500/20 to-pink-500/20",
+      image: birthdayImage,
+    },
+    {
+      emoji: "🌅",
+      title: t("mediaGallery.memories.2.title"),
+      description: t("mediaGallery.memories.2.description"),
+      color: "from-orange-500/20 to-yellow-500/20",
+      image: sunriseImage,
+    },
+    {
+      emoji: "🎭",
+      title: t("mediaGallery.memories.3.title"),
+      description: t("mediaGallery.memories.3.description"),
+      color: "from-blue-500/20 to-purple-500/20",
+      image: concertImage,
+    },
+    {
+      emoji: "🍝",
+      title: t("mediaGallery.memories.4.title"),
+      description: t("mediaGallery.memories.4.description"),
+      color: "from-red-500/20 to-orange-500/20",
+      image: cookingImage,
+    },
+    {
+      emoji: "🌇",
+      title: t("mediaGallery.memories.5.title"),
+      description: t("mediaGallery.memories.5.description"),
+      color: "from-amber-500/20 to-orange-500/20",
+      image: sunsetImage,
+    },
+    {
+      emoji: "✈️",
+      title: t("mediaGallery.memories.6.title"),
+      description: t("mediaGallery.memories.6.description"),
+      color: "from-sky-500/20 to-indigo-500/20",
+      image: firstTripImage,
+    },
+    {
+      emoji: "🗺️",
+      title: t("mediaGallery.memories.7.title"),
+      description: t("mediaGallery.memories.7.description"),
+      color: "from-green-500/20 to-teal-500/20",
+      image: lastTripImage,
+    },
+    {
+      emoji: "🌊",
+      title: t("mediaGallery.memories.8.title"),
+      description: t("mediaGallery.memories.8.description"),
+      color: "from-blue-500/20 to-cyan-500/20",
+      image: seaImage,
+    },
+  ];
+
+  const minSwipeDistance = 50;
+
+  const goToPrevious = useCallback(() => {
+    if (selectedImage !== null) {
+      setSelectedImage(selectedImage === 0 ? memories.length - 1 : selectedImage - 1);
+    }
+  }, [selectedImage, memories.length]);
+
+  const goToNext = useCallback(() => {
+    if (selectedImage !== null) {
+      setSelectedImage(selectedImage === memories.length - 1 ? 0 : selectedImage + 1);
+    }
+  }, [selectedImage, memories.length]);
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      goToNext();
+    } else if (isRightSwipe) {
+      goToPrevious();
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedImage === null) return;
+      
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        goToPrevious();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        goToNext();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        setSelectedImage(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedImage, goToPrevious, goToNext]);
 
   return (
     <section id="gallery" className="min-h-screen py-24 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl font-playfair font-bold mb-4 text-foreground">
-            Our Beautiful Moments
+            {t("mediaGallery.title")}
           </h2>
           <p className="text-xl text-muted-foreground">
-            A gallery of memories we've created together
+            {t("mediaGallery.subtitle")}
           </p>
         </div>
 
@@ -143,40 +203,72 @@ const MediaGallery = () => {
         {selectedImage !== null && (
           <div
             className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedImage(null)}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setSelectedImage(null);
+              }
+            }}
           >
+            {/* Close Button */}
             <button
-              className="absolute top-4 right-4 text-white hover:text-primary transition-colors"
+              className="absolute top-4 right-4 z-20 text-white hover:text-primary transition-colors bg-black/50 rounded-full p-2"
               onClick={() => setSelectedImage(null)}
             >
-              <X className="w-8 h-8" />
+              <X className="w-6 h-6" />
             </button>
-            <div className="max-w-4xl w-full">
+
+            {/* Navigation Buttons */}
+            <button
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 text-white hover:text-primary transition-colors bg-black/50 rounded-full p-3"
+              onClick={goToPrevious}
+            >
+              <ChevronLeft className="w-8 h-8" />
+            </button>
+            <button
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 text-white hover:text-primary transition-colors bg-black/50 rounded-full p-3"
+              onClick={goToNext}
+            >
+              <ChevronRight className="w-8 h-8" />
+            </button>
+
+            {/* Image Counter */}
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 text-white bg-black/50 rounded-full px-4 py-2 text-sm">
+              {selectedImage + 1} / {memories.length}
+            </div>
+
+            {/* Main Content */}
+            <div 
+              className="max-w-4xl w-full"
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
               {memories[selectedImage].image ? (
                 <div className="relative rounded-3xl overflow-hidden">
                   <img 
                     src={memories[selectedImage].image} 
                     alt={memories[selectedImage].title}
-                    className="w-full h-auto max-h-[80vh] object-contain rounded-3xl"
+                    className="w-full h-auto max-h-[80vh] object-contain rounded-3xl select-none"
+                    draggable={false}
                   />
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-8 text-center">
-                    <h3 className="text-4xl font-playfair font-bold text-white mb-4">
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-4 sm:p-8 text-center">
+                    <h3 className="text-2xl sm:text-4xl font-playfair font-bold text-white mb-2 sm:mb-4">
                       {memories[selectedImage].title}
                     </h3>
-                    <p className="text-xl text-white/90">
+                    <p className="text-lg sm:text-xl text-white/90">
                       {memories[selectedImage].description}
                     </p>
                   </div>
                 </div>
               ) : (
-                <div className={`bg-gradient-to-br ${memories[selectedImage].color} rounded-3xl p-12 text-center`}>
-                  <div className="text-8xl mb-6 animate-float">
+                <div className={`bg-gradient-to-br ${memories[selectedImage].color} rounded-3xl p-8 sm:p-12 text-center`}>
+                  <div className="text-6xl sm:text-8xl mb-6 animate-float">
                     {memories[selectedImage].emoji}
                   </div>
-                  <h3 className="text-4xl font-playfair font-bold text-foreground mb-4">
+                  <h3 className="text-2xl sm:text-4xl font-playfair font-bold text-foreground mb-4">
                     {memories[selectedImage].title}
                   </h3>
-                  <p className="text-xl text-muted-foreground">
+                  <p className="text-lg sm:text-xl text-muted-foreground">
                     {memories[selectedImage].description}
                   </p>
                 </div>
@@ -187,7 +279,7 @@ const MediaGallery = () => {
 
         <div className="mt-12 text-center">
           <p className="text-sm text-muted-foreground italic">
-            Click on any moment to relive the memory 💕
+            {t("mediaGallery.clickHint")}
           </p>
         </div>
       </div>

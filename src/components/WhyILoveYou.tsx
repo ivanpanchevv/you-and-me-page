@@ -1,39 +1,43 @@
 import { Heart, Sparkles, Smile, Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useTranslation } from "react-i18next";
 
-const reasons = [
-  {
-    icon: Heart,
-    title: "Your Smile",
-    description: "The way your face lights up when you laugh is the most beautiful thing I've ever seen. It makes my whole world brighter.",
-  },
-  {
-    icon: Sparkles,
-    title: "Your Kindness",
-    description: "You have the biggest heart and always think of others. Your compassion and care make you truly special.",
-  },
-  {
-    icon: Smile,
-    title: "Your Sense of Humor",
-    description: "You make me laugh like no one else can. Every day with you is filled with joy and silly moments I cherish.",
-  },
-  {
-    icon: Star,
-    title: "Simply Being You",
-    description: "Everything about you is perfect in my eyes. Thank you for being exactly who you are and for letting me love you.",
-  },
-];
 
 const WhyILoveYou = () => {
+  const { t } = useTranslation();
+  
+  const reasons = [
+    {
+      icon: Heart,
+      title: t("whyILoveYou.reasons.smile.title"),
+      description: t("whyILoveYou.reasons.smile.description"),
+    },
+    {
+      icon: Sparkles,
+      title: t("whyILoveYou.reasons.kindness.title"),
+      description: t("whyILoveYou.reasons.kindness.description"),
+    },
+    {
+      icon: Smile,
+      title: t("whyILoveYou.reasons.humor.title"),
+      description: t("whyILoveYou.reasons.humor.description"),
+    },
+    {
+      icon: Star,
+      title: t("whyILoveYou.reasons.beingYou.title"),
+      description: t("whyILoveYou.reasons.beingYou.description"),
+    },
+  ];
+  
   return (
     <section className="py-24 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl font-playfair font-bold mb-4 text-foreground">
-            Why I Love You
+            {t("whyILoveYou.title")}
           </h2>
           <p className="text-xl text-muted-foreground">
-            Just a few of the countless reasons...
+            {t("whyILoveYou.subtitle")}
           </p>
         </div>
 

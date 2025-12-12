@@ -1,38 +1,40 @@
 import { Heart } from "lucide-react";
-
-const memories = [
-  {
-    title: "Our First Date",
-    description: "The moment I knew you were special",
-    emoji: "🌟",
-  },
-  {
-    title: "That Perfect Day",
-    description: "When we laughed until our cheeks hurt",
-    emoji: "😊",
-  },
-  {
-    title: "Cozy Nights In",
-    description: "Just us, good food, and great company",
-    emoji: "🏠",
-  },
-  {
-    title: "Adventures Together",
-    description: "Every journey is better with you",
-    emoji: "✨",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 const MemoriesGallery = () => {
+  const { t } = useTranslation();
+
+  const memories = [
+    {
+      title: "Our First Date",
+      description: "The moment I knew you were special",
+      emoji: "🌟",
+    },
+    {
+      title: "That Perfect Day",
+      description: "When we laughed until our cheeks hurt",
+      emoji: "😊",
+    },
+    {
+      title: "Cozy Nights In",
+      description: "Just us, good food, and great company",
+      emoji: "🏠",
+    },
+    {
+      title: "Adventures Together",
+      description: "Every journey is better with you",
+      emoji: "✨",
+    },
+  ];
   return (
     <section className="py-24 px-6 gradient-soft">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-5xl md:text-6xl font-playfair font-bold mb-4 text-foreground">
-            Our Beautiful Moments
+            {t("memoriesGallery.title")}
           </h2>
           <p className="text-xl text-muted-foreground">
-            Memories that make my heart smile
+            {t("memoriesGallery.subtitle")}
           </p>
         </div>
 

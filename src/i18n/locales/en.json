@@ -1,0 +1,254 @@
+{
+  "auth": {
+    "title": "A Special Date",
+    "subtitle": "Enter our special day to unlock your surprise",
+    "label": "What's the date? 📅",
+    "button": "Unlock My Surprise",
+    "hint": "Hint: Try with your beautiful date! 😉",
+    "successMessage": "Welcome, my love! ❤️",
+    "errorMessage": "Hmm, that's not quite right. Think about our special day..."
+  },
+  "hero": {
+    "title": "For You, Dear Mary",
+    "subtitle": "Every moment with you is a treasure. This little corner of the internet is my way of showing you just how much you mean to me. ❤️"
+  },
+  "navigation": {
+    "brand": "For You",
+    "home": "Home",
+    "messages": "Messages",
+    "timeline": "Timeline",
+    "journey": "Journey",
+    "gallery": "Gallery",
+    "stars": "Stars",
+    "heartLock": "Padlock",
+    "virtualPet": "Virtual Pet",
+    "loveLetter": "Card"
+  },
+  "whyILoveYou": {
+    "title": "Why I Love You",
+    "subtitle": "Just a few of the countless reasons...",
+    "reasons": {
+      "smile": {
+        "title": "Your Smile",
+        "description": "The way your face shines when you smile is the sweetest thing."
+      },
+      "kindness": {
+        "title": "Your Kindness",
+        "description": "You have the biggest heart and always think of others. Your compassion and care make you truly special."
+      },
+      "humor": {
+        "title": "Your Sense of Humor",
+        "description": "You make me laugh in every conversation. Every day with you is filled with joy and silly moments I cherish."
+      },
+      "beingYou": {
+        "title": "Simply Being You",
+        "description": "Everything about you is perfect in my eyes. Thank you for being exactly who you are and for letting me love you."
+      }
+    }
+  },
+  "messageGenerator": {
+    "title": "Messages of Love",
+    "subtitle": "Random reminders of how much you mean to me",
+    "newMessageButton": "New Message",
+    "complimentButton": "Random Compliment",
+    "footer": "Click to receive a new message anytime you need a reminder 💕",
+    "messages": [
+      "You make every day brighter just by being in it.",
+      "Your smile is my favorite view in the whole world.",
+      "I fall in love with you more every single day.",
+      "You're the best thing that ever happened to me.",
+      "Every moment with you is a treasure I cherish.",
+      "You're not just my love, you're my best friend.",
+      "Your laugh is the most beautiful sound I know.",
+      "I love how you make ordinary moments magical.",
+      "You inspire me to be a better person every day.",
+      "Thank you that we fit perfectly and think the same way."
+    ],
+    "compliments": [
+      "You're absolutely gorgeous, inside and out.",
+      "Your kindness makes the world a better place.",
+      "You have the most amazing sense of humor.",
+      "Your strength and resilience inspire me.",
+      "You're incredibly talented at everything you do."
+    ]
+  },
+  "loveLetter": {
+    "title": "Letter for Your Holiday",
+    "subtitle": "Words written with love, just for you",
+    "openButton": "Click to open",
+    "footer": "Made with love, just for you",
+    "noteLabel": "A Note For You",
+    "content": {
+      "greeting": "Happy Birthday Dear Mary!",
+      "paragraph1": "For the first time I decided to really listen to your words and put time and effort into something made especially for you, instead of just choosing an expensive gift. I wanted to give you something you won't forget, something that carries a piece of me. Let this site always remind you how much I love you and that, no matter what happens, I'll be by your side.",
+      "paragraph2": "I wish you to never stop pursuing your dreams, even when the path seems difficult or uncertain. I wish you to believe in yourself the way I believe in you, and always stay true to what you are: strong, tender, persistent and genuine. Exactly how I love you. Thank you for being with me in good moments and difficult ones. You understand me, you tolerate me and most of all you make me want to be a better person. With you I feel calmer, braver and more confident in myself.",
+      "paragraph3": "Like every year, now too I am endlessly proud of you - of everything you are, the way you think, and how much you give of yourself to the world and to your friends and family. Continue boldly and confidently forward, because you can do it and you deserve it. And even when we're far from each other, I want you to know that you're never alone. I will always support you and I'll always be here when you need a shoulder to lean on.",
+      "signOff": "Forever yours, Ivan"
+    }
+  },
+  "starMap": {
+    "title": "Starry Night",
+    "subtitle": "A peaceful sky filled with countless twinkling stars",
+    "quote": "Under the vast starry sky, every star tells its own story."
+  },
+  "heartLock": {
+    "title": "Our Love Story",
+    "unlockHint": "Drag the key to the heart to unlock our journey",
+    "daysOfHappiness": "{{days}} days of pure happiness",
+    "daysOfLove": "Days of Love",
+    "snailTravel": "A snail could travel",
+    "km": "km",
+    "monthsOfJoy": "Months of Joy",
+    "yearsToCome": "Years to Come",
+    "quote": "Every day with you feels like unlocking a new chapter of happiness",
+    "since": "Since",
+    "counting": "And counting every moment..."
+  },
+  "virtualPet": {
+    "title": "Meet Our Virtual Pup",
+    "subtitle": "Take care of our adorable companion together!",
+    "feedButton": "Feed",
+    "feedingButton": "Eating...",
+    "petButton": "Pet",
+    "pettingButton": "Petting...",
+    "sleepButton": "Sleep",
+    "sleepingButton": "Sleeping...",
+    "happiness": "Happiness",
+    "hunger": "Hunger",
+    "energy": "Energy",
+    "proTip": "Pro tip: Click on the dog to give it love and attention!",
+    "quote": "A pet's love is pure and unconditional",
+    "moods": {
+      "veryHappy": "I'm so happy! Life is great! 🌟",
+      "happy": "I'm feeling good! Thanks for taking care of me! 😊",
+      "hungry": "I'm getting hungry... Could you feed me? 🍖",
+      "sleepy": "I'm feeling tired... Maybe time for a nap? 💤",
+      "sad": "I need some love and attention... 💙",
+      "neutral": "Just chilling here! What should we do? 🐾"
+    }
+  },
+  "interactiveTimeline": {
+    "title": "Our Journey Together",
+    "subtitle": "Every moment is a milestone when I'm with you",
+    "milestones": [
+      {
+        "title": "Our First Meeting",
+        "description": "The day everything changed. Incredible pasta walk to Bar De Rouge.",
+        "location": "Spaghetti Kitchen"
+      },
+      {
+        "title": "Drawing Flowers on My Wall",
+        "description": "You made my space more beautiful, just like you make my life.",
+        "location": "Home"
+      },
+      {
+        "title": "Trip to France",
+        "description": "Our first adventure abroad together. Unforgettable memories.",
+        "location": "France"
+      },
+      {
+        "title": "Picnic in the Mountain",
+        "description": "Nature, good food, and your company - perfect combination.",
+        "location": "Vitosha Arboretum"
+      },
+      {
+        "title": "First Sea Together",
+        "description": "Waves, sunset, and falling deeper in love with you.",
+        "location": "Camping Gradina"
+      },
+      {
+        "title": "The Weeknd Concert",
+        "description": "Music, dancing, and creating magical memories in a beautiful city.",
+        "location": "Prague"
+      },
+      {
+        "title": "Horse Riding",
+        "description": "New adventures and wonderful animals.",
+        "location": "Voynegovtsi"
+      },
+      {
+        "title": "First Car Trip Together",
+        "description": "Blue waters, paradise with you.",
+        "location": "Corfu"
+      }
+    ]
+  },
+  "journeyMap": {
+    "title": "Places We've Been Together",
+    "subtitle": "Every journey is an adventure with you",
+    "quote": "Not all who wander are lost - especially when wandering with you 🗺️",
+    "places": [
+      {
+        "name": "Corfu",
+        "description": "Island paradise with crystal waters"
+      },
+      {
+        "name": "Petkovo",
+        "description": "Mountain adventures and fresh air"
+      },
+      {
+        "name": "Nimes",
+        "description": "French charm and ancient history"
+      },
+      {
+        "name": "Antwerp",
+        "description": "Belgian beauty and diamond city"
+      },
+      {
+        "name": "Borovets",
+        "description": "Snowy peaks and mountain magic"
+      },
+      {
+        "name": "Sozopol",
+        "description": "Sea memories and the magic of Gradina"
+      }
+    ]
+  },
+  "mediaGallery": {
+    "title": "Our Beautiful Moments",
+    "subtitle": "A gallery of memories we've created together",
+    "clickHint": "Click on any moment to relive the memory 💕",
+    "memories": [
+      {
+        "title": "First Meeting",
+        "description": "That dinner I'll never forget"
+      },
+      {
+        "title": "Your Birthday",
+        "description": "Your special day"
+      },
+      {
+        "title": "Sunrise Together",
+        "description": "Worth waking up early"
+      },
+      {
+        "title": "Concert Together",
+        "description": "Dancing like nobody's watching"
+      },
+      {
+        "title": "Cooking Together",
+        "description": "Messy kitchen, happy hearts"
+      },
+      {
+        "title": "Sunset Together",
+        "description": "Golden hour with my favorite person"
+      },
+      {
+        "title": "First Trip",
+        "description": "Adventures begin with you"
+      },
+      {
+        "title": "Last Trip",
+        "description": "Making memories around the world"
+      },
+      {
+        "title": "Sea Together",
+        "description": "Waves and endless horizons"
+      }
+    ]
+  },
+  "memoriesGallery": {
+    "title": "Our Beautiful Moments",
+    "subtitle": "Memories to last a lifetime"
+  }
+}

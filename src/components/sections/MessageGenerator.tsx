@@ -2,33 +2,18 @@ import { useState, useEffect } from "react";
 import { Heart, RefreshCw, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useTranslation } from "react-i18next";
 
-const messages = [
-  "You make every day brighter just by being in it.",
-  "Your smile is my favorite view in the whole world.",
-  "I fall in love with you more every single day.",
-  "You're the best thing that ever happened to me.",
-  "Every moment with you is a treasure I cherish.",
-  "You're not just my love, you're my best friend.",
-  "Your laugh is the most beautiful sound I know.",
-  "I love how you make ordinary moments magical.",
-  "You inspire me to be a better person every day.",
-  "Thank you for being exactly who you are.",
-];
-
-const compliments = [
-  "You're absolutely gorgeous, inside and out.",
-  "Your kindness makes the world a better place.",
-  "You have the most amazing sense of humor.",
-  "Your strength and resilience inspire me.",
-  "You're incredibly talented at everything you do.",
-];
 
 const MessageGenerator = () => {
+  const { t } = useTranslation();
   const [currentMessage, setCurrentMessage] = useState("");
   const [displayText, setDisplayText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [messageType, setMessageType] = useState<"message" | "compliment">("message");
+  
+  const messages = t("messageGenerator.messages", { returnObjects: true }) as string[];
+  const compliments = t("messageGenerator.compliments", { returnObjects: true }) as string[];
 
   const generateMessage = (type: "message" | "compliment") => {
     setMessageType(type);
@@ -62,10 +47,10 @@ const MessageGenerator = () => {
       <div className="max-w-4xl mx-auto w-full">
         <div className="text-center mb-12">
           <h2 className="text-5xl md:text-6xl font-playfair font-bold mb-4 text-foreground">
-            Messages of Love
+            {t("messageGenerator.title")}
           </h2>
           <p className="text-xl text-muted-foreground">
-            Random reminders of how much you mean to me
+            {t("messageGenerator.subtitle")}
           </p>
         </div>
 
@@ -86,7 +71,7 @@ const MessageGenerator = () => {
                 disabled={isTyping}
               >
                 <RefreshCw className="mr-2 w-4 h-4" />
-                New Love Message
+                {t("messageGenerator.newMessageButton")}
               </Button>
               <Button
                 onClick={() => generateMessage("compliment")}
@@ -95,7 +80,7 @@ const MessageGenerator = () => {
                 disabled={isTyping}
               >
                 <Sparkles className="mr-2 w-4 h-4" />
-                Random Compliment
+                {t("messageGenerator.complimentButton")}
               </Button>
             </div>
           </CardContent>
@@ -103,7 +88,7 @@ const MessageGenerator = () => {
 
         <div className="mt-8 text-center">
           <p className="text-sm text-muted-foreground italic">
-            Click to receive a new message anytime you need a reminder 💕
+            {t("messageGenerator.footer")}
           </p>
         </div>
       </div>

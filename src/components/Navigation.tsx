@@ -1,4 +1,6 @@
 import { Heart, Sparkles, Map, Image, Star, MessageSquareHeart, Home, Mail } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 interface NavigationProps {
   activeSection: string;
@@ -6,16 +8,18 @@ interface NavigationProps {
 }
 
 const Navigation = ({ activeSection, onNavigate }: NavigationProps) => {
+  const { t } = useTranslation();
+  
   const sections = [
-    { id: "home", icon: Home, label: "Home" },
-    { id: "messages", icon: MessageSquareHeart, label: "Messages" },
-    { id: "timeline", icon: Sparkles, label: "Timeline" },
-    { id: "journey", icon: Map, label: "Journey" },
-    { id: "gallery", icon: Image, label: "Gallery" },
-    { id: "stars", icon: Star, label: "Stars" },
-    { id: "heart-lock", icon: Heart, label: "Heart Lock" },
-    { id: "pet", icon: "🐶", label: "Virtual Pet" },
-    { id: "letter", icon: Mail, label: "Love Letter" },
+    { id: "home", icon: Home, label: t("navigation.home") },
+    { id: "messages", icon: MessageSquareHeart, label: t("navigation.messages") },
+    { id: "timeline", icon: Sparkles, label: t("navigation.timeline") },
+    { id: "journey", icon: Map, label: t("navigation.journey") },
+    { id: "gallery", icon: Image, label: t("navigation.gallery") },
+    { id: "stars", icon: Star, label: t("navigation.stars") },
+    { id: "heart-lock", icon: Heart, label: t("navigation.heartLock") },
+    { id: "pet", icon: "🐶", label: t("navigation.virtualPet") },
+    { id: "letter", icon: Mail, label: t("navigation.loveLetter") },
   ];
 
   return (
@@ -25,7 +29,7 @@ const Navigation = ({ activeSection, onNavigate }: NavigationProps) => {
           <div className="flex items-center gap-2">
             <Heart className="w-6 h-6 text-primary fill-primary" />
             <span className="font-playfair font-bold text-xl text-foreground">
-              For You
+              {t("navigation.brand")}
             </span>
           </div>
 
@@ -53,10 +57,8 @@ const Navigation = ({ activeSection, onNavigate }: NavigationProps) => {
             })}
           </div>
 
-          {/* Mobile menu - simplified version */}
-          <div className="md:hidden">
-            <Heart className="w-6 h-6 text-primary" />
-          </div>
+          {/* Language switcher */}
+          <LanguageSwitcher />
         </div>
       </div>
     </nav>

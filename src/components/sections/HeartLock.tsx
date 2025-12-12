@@ -1,7 +1,9 @@
 import { useEffect, useState, useRef } from "react";
 import { Heart, Key, Sparkles, Lock, Infinity } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const HeartLock = () => {
+  const { t } = useTranslation();
   const [isUnlocking, setIsUnlocking] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -74,6 +76,7 @@ const HeartLock = () => {
   const handleTouchStart = (e: React.TouchEvent) => {
     if (isUnlocked) return;
     
+    e.preventDefault();
     setIsDragging(true);
     const touch = e.touches[0];
     const rect = containerRef.current?.getBoundingClientRect();
@@ -87,6 +90,8 @@ const HeartLock = () => {
 
   const handleTouchMove = (e: TouchEvent) => {
     if (!isDragging || isUnlocked) return;
+    
+    e.preventDefault();
     
     const touch = e.touches[0];
     const rect = containerRef.current?.getBoundingClientRect();
@@ -130,12 +135,20 @@ const HeartLock = () => {
 
   useEffect(() => {
     if (isDragging) {
+      // Prevent body scroll when dragging
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+      
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
       document.addEventListener('touchmove', handleTouchMove, { passive: false });
       document.addEventListener('touchend', handleMouseUp);
       
       return () => {
+        // Re-enable body scroll
+        document.body.style.overflow = '';
+        document.body.style.touchAction = '';
+        
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
         document.removeEventListener('touchmove', handleTouchMove);
@@ -151,15 +164,15 @@ const HeartLock = () => {
       <div className="max-w-4xl mx-auto relative z-10">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-5xl md:text-6xl font-playfair font-bold mb-4 bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
-            Our Love Story
+            {t("heartLock.title")}
           </h2>
           <p className="text-xl text-muted-foreground">
-            {isUnlocked ? `${daysTogether} days of pure happiness` : "Drag the key to the heart to unlock our journey"}
+            {isUnlocked ? t("heartLock.daysOfHappiness", { days: daysTogether }) : t("heartLock.unlockHint")}
           </p>
         </div>
 
         <div className="flex flex-col items-center gap-12">
-          <div ref={containerRef} className="relative w-80 h-80 flex items-center justify-center">
+          <div ref={containerRef} className="relative w-80 h-80 sm:w-96 sm:h-96 flex items-center justify-center">
             {isUnlocked && (
               <>
                 <Sparkles className="absolute top-8 left-12 w-6 h-6 text-yellow-400 animate-float" />
@@ -178,7 +191,7 @@ const HeartLock = () => {
                 }`}
               >
                 <Heart
-                  className={`w-48 h-48 transition-all duration-1000 ${
+                  className={`w-36 h-36 sm:w-48 sm:h-48 transition-all duration-1000 ${
                     isUnlocked
                       ? "text-pink-500 fill-pink-500"
                       : isNearHeart
@@ -197,7 +210,7 @@ const HeartLock = () => {
 
               {!isUnlocked && (
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <Lock className={`w-12 h-12 transition-all duration-300 ${
+                  <Lock className={`w-8 h-8 sm:w-12 sm:h-12 transition-all duration-300 ${
                     isNearHeart ? "text-pink-400 scale-110" : "text-gray-600"
                   }`} />
                 </div>
@@ -209,7 +222,7 @@ const HeartLock = () => {
                     <div className="text-5xl font-playfair font-bold text-white drop-shadow-lg">
                       {daysTogether}
                     </div>
-                    <p className="text-xs text-white font-semibold mt-1 drop-shadow">Days of Love</p>
+                    <p className="text-xs text-white font-semibold mt-1 drop-shadow">{t("heartLock.daysOfLove")}</p>
                   </div>
                 </div>
               )}
@@ -217,7 +230,7 @@ const HeartLock = () => {
 
             <div
               ref={keyRef}
-              className={`absolute transition-all ${
+              className={`absolute transition-all touch-none ${
                 isUnlocking
                   ? "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rotate-90 scale-150"
                   : isUnlocked
@@ -244,7 +257,7 @@ const HeartLock = () => {
               onTouchStart={handleTouchStart}
             >
               <Key
-                className={`w-20 h-20 select-none transition-colors duration-300 ${
+                className={`w-16 h-16 sm:w-20 sm:h-20 select-none transition-colors duration-300 ${
                   isUnlocked 
                     ? "text-gray-400" 
                     : isNearHeart
@@ -267,32 +280,32 @@ const HeartLock = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-2xl">
             <div className="text-center p-6 rounded-2xl bg-white/80 backdrop-blur border border-pink-200 shadow-lg hover:shadow-xl transition-shadow">
               <span className="text-3xl mb-3">🐌</span>
-              <p className="text-2xl font-bold text-gray-800">{(daysTogether * 0.03 * 24).toFixed(0)} km</p>
-              <p className="text-sm text-gray-600">A snail could travel</p>
+              <p className="text-2xl font-bold text-gray-800">{(daysTogether * 0.03 * 24).toFixed(0)} {t("heartLock.km")}</p>
+              <p className="text-sm text-gray-600">{t("heartLock.snailTravel")}</p>
             </div>
             
             <div className="text-center p-6 rounded-2xl bg-white/80 backdrop-blur border border-purple-200 shadow-lg hover:shadow-xl transition-shadow">
               <Heart className="w-10 h-10 text-purple-500 fill-purple-500 mx-auto mb-3" />
               <p className="text-2xl font-bold text-gray-800">{monthsTogether}</p>
-              <p className="text-sm text-gray-600">Months of Joy</p>
+              <p className="text-sm text-gray-600">{t("heartLock.monthsOfJoy")}</p>
             </div>
             
             <div className="text-center p-6 rounded-2xl bg-white/80 backdrop-blur border border-blue-200 shadow-lg hover:shadow-xl transition-shadow">
               <Infinity className="w-10 h-10 text-blue-500 mx-auto mb-3" />
               <p className="text-2xl font-bold text-gray-800">∞</p>
-              <p className="text-sm text-gray-600">Years to Come</p>
+              <p className="text-sm text-gray-600">{t("heartLock.yearsToCome")}</p>
             </div>
           </div>
 
           <div className="max-w-lg mx-auto text-center space-y-4">
             <p className="text-lg text-gray-700 italic font-medium">
-              "Every day with you feels like unlocking a new chapter of happiness"
+              "{t("heartLock.quote")}"
             </p>
             
             {isUnlocked && (
               <div className="animate-fade-in space-y-3 mt-8 p-6 bg-white/60 backdrop-blur rounded-2xl border border-pink-100">
                 <p className="text-sm text-gray-600">
-                  Since {startDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  {t("heartLock.since")} {startDate.toLocaleDateString('bg-BG', { month: 'long', day: 'numeric', year: 'numeric' })}
                 </p>
                 <div className="flex justify-center gap-2">
                   {[...Array(5)].map((_, i) => (
@@ -300,7 +313,7 @@ const HeartLock = () => {
                   ))}
                 </div>
                 <p className="text-xs text-gray-500">
-                  And counting every moment...
+                  {t("heartLock.counting")}
                 </p>
               </div>
             )}
