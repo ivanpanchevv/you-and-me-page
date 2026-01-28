@@ -57,8 +57,19 @@ const Navigation = ({ activeSection, onNavigate }: NavigationProps) => {
             })}
           </div>
 
-          {/* Language switcher */}
-          <LanguageSwitcher />
+          <div className="flex items-center gap-2">
+            {/* Valentine's Day link */}
+            <a
+              href="/valentine.html"
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-lg hover:from-pink-600 hover:to-red-600 transition-all transform hover:scale-105 shadow-lg"
+            >
+              <span className="text-lg">💝</span>
+              <span className="text-sm font-medium">Valentine's Special</span>
+            </a>
+            
+            {/* Language switcher */}
+            <LanguageSwitcher />
+          </div>
         </div>
       </div>
     </nav>

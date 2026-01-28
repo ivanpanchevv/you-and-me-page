@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ще бъдеш ли моята Валентинка?</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ff6b9d, #ff4757, #ee5a6f, #c44569);
+            background-size: 400% 400%;
+            animation: gradientShift 10s ease infinite;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Falling rose petals */
+        .petal {
+            position: absolute;
+            width: 35px;
+            height: 35px;
+            background: radial-gradient(circle, #ff6b9d, #ff4757);
+            border-radius: 0 100% 0 100%;
+            animation: fall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(calc(100vh + 50px)) rotate(360deg);
+            }
+        }
+
+        .petal:nth-child(1) { left: 10%; animation-duration: 8s; animation-delay: 0s; }
+        .petal:nth-child(2) { left: 20%; animation-duration: 10s; animation-delay: 1s; }
+        .petal:nth-child(3) { left: 30%; animation-duration: 9s; animation-delay: 2s; }
+        .petal:nth-child(4) { left: 40%; animation-duration: 11s; animation-delay: 0.5s; }
+        .petal:nth-child(5) { left: 50%; animation-duration: 8s; animation-delay: 3s; }
+        .petal:nth-child(6) { left: 60%; animation-duration: 12s; animation-delay: 1.5s; }
+        .petal:nth-child(7) { left: 70%; animation-duration: 9s; animation-delay: 2.5s; }
+        .petal:nth-child(8) { left: 80%; animation-duration: 10s; animation-delay: 0.8s; }
+        .petal:nth-child(9) { left: 90%; animation-duration: 11s; animation-delay: 3.5s; }
+        .petal:nth-child(10) { left: 95%; animation-duration: 8s; animation-delay: 4s; }
+
+        /* Floating hearts background */
+        .floating-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart-bg {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); }
+            33% { transform: translateY(-30px) translateX(20px) rotate(10deg); }
+            66% { transform: translateY(20px) translateX(-20px) rotate(-10deg); }
+        }
+
+        /* Main container */
+        .valentine-container {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Gift box animation */
+        .gift-box-wrapper {
+            margin-bottom: 40px;
+            perspective: 1000px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .gift-box {
+            width: 250px;
+            height: 250px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+
+        .gift-box:hover {
+            transform: rotateY(5deg) rotateX(-5deg);
+        }
+
+        /* Box base */
+        .box-bottom {
+            position: absolute;
+            width: 250px;
+            height: 200px;
+            bottom: 0;
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff4757 100%);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Decorative ribbon */
+        .ribbon-vertical {
+            position: absolute;
+            width: 40px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(to bottom, #ffd700, #ffed4e);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .ribbon-horizontal {
+            position: absolute;
+            width: 100%;
+            height: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(to right, #ffd700, #ffed4e);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Box lid */
+        .box-lid {
+            position: absolute;
+            width: 260px;
+            height: 70px;
+            top: 0;
+            left: -5px;
+            background: linear-gradient(135deg, #ff8fab 0%, #ff6b9d 100%);
+            border-radius: 10px;
+            transform-origin: center;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.15);
+            z-index: 10;
+        }
+
+        .gift-box-wrapper.opened .box-lid {
+            transform: translateY(-300px) rotateZ(25deg) scale(0.5);
+            opacity: 0;
+        }
+
+        /* Bow on top */
+        .bow {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 60px;
+            z-index: 11;
+        }
+
+        .bow::before,
+        .bow::after {
+            content: '';
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 50% 50% 50% 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .bow::before {
+            left: 5px;
+            transform: rotate(-45deg);
+        }
+
+        .bow::after {
+            right: 5px;
+            transform: rotate(45deg);
+        }
+
+        .bow-center {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #ffd700, #ffb700);
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Message card inside */
+        .message-card {
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            width: 220px;
+            background: linear-gradient(135deg, #fff 0%, #ffe8ec 100%);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 5;
+            text-align: center;
+        }
+
+        .gift-box-wrapper.opened .message-card {
+            opacity: 1;
+            transform: translateX(-50%) scale(1) translateY(-20px);
+        }
+
+        .message-card h3 {
+            font-size: 22px;
+            color: #c44569;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        .message-card p {
+            color: #ff6b9d;
+            font-size: 16px;
+            font-style: italic;
+            margin: 10px 0;
+        }
+
+        /* Confetti inside box */
+        @keyframes confetti-pop {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-200px) scale(1) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .gift-box-wrapper.opened .confetti-piece {
+            animation: confetti-pop 1s ease-out forwards;
+        }
+
+        .confetti-piece:nth-child(1) { left: 20%; background: #ff6b9d; animation-delay: 0.1s; }
+        .confetti-piece:nth-child(2) { left: 40%; background: #ffd700; animation-delay: 0.2s; }
+        .confetti-piece:nth-child(3) { left: 60%; background: #ff4757; animation-delay: 0.3s; }
+        .confetti-piece:nth-child(4) { left: 80%; background: #ffed4e; animation-delay: 0.4s; }
+        .confetti-piece:nth-child(5) { left: 30%; background: #ff8fab; animation-delay: 0.5s; }
+
+        /* Main message */
+        .valentine-message {
+            opacity: 0;
+            transition: opacity 1s;
+            max-width: 600px;
+        }
+
+        .valentine-message.show {
+            opacity: 1;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            color: #ffe0e6;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        /* Response buttons */
+        .response-buttons {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .response-buttons.show {
+            opacity: 1;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.3em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .yes-btn {
+            background: white;
+            color: #ff4757;
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3); }
+            50% { box-shadow: 0 5px 30px rgba(255, 255, 255, 0.6); }
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.1);
+            background: #ffe0e6;
+        }
+
+        .no-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            position: relative;
+        }
+
+        .no-btn:hover {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Celebration */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 1000;
+            background: rgba(255, 71, 87, 0.9);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .celebration.active {
+            display: flex;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .celebration-message {
+            font-size: 3em;
+            color: white;
+            text-align: center;
+            animation: zoomIn 0.8s;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffeb3b;
+            animation: confettiFall 3s linear infinite;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Cupid arrow */
+        .cupid-arrow {
+            position: absolute;
+            top: 20px;
+            right: -100px;
+            font-size: 60px;
+            animation: flyArrow 10s infinite linear;
+            z-index: 5;
+        }
+
+        @keyframes flyArrow {
+            from { right: -100px; }
+            to { right: calc(100% + 100px); }
+        }
+
+        
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        /* Close button */
+        .close-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #ff4757;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: white;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Click me text on gift box */
+        .box-lid .click-text {
+            position: absolute;
+            top: 35px;  /* Half of 70px height */
+            left: 130px; /* Half of 260px width */
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 12;
+            opacity: 0.9;
+            animation: pulse 2s infinite;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .gift-box-wrapper.opened .click-text {
+            display: none;
+        }
+
+        /* Continue button in celebration */
+        .continue-btn {
+            margin-top: 25px !important;
+            padding: 6px 14px !important;
+            background: white !important;
+            color: #ff4757 !important;
+            border: none !important;
+            border-radius: 15px !important;
+            font-size: 0.75em !important;
+            font-weight: 600 !important;
+            cursor: pointer !important;
+            transition: all 0.3s !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+            display: inline-block !important;
+            line-height: 1.2 !important;
+        }
+
+        .continue-btn:hover {
+            transform: scale(1.05) !important;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5em; }
+            .subtitle { font-size: 1.2em; }
+            .gift-box { transform: scale(0.8); }
+            .btn { padding: 12px 30px; font-size: 1.1em; }
+            .close-btn { 
+                top: 10px; 
+                right: 10px; 
+                width: 40px; 
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Close button -->
+    <a href="/" class="close-btn" title="Обратно към началото">×</a>
+    
+    <!-- Falling petals -->
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+
+    <!-- Floating hearts background -->
+    <div class="floating-hearts">
+        <span class="heart-bg" style="top: 10%; left: 15%; animation-delay: 0s;">❤️</span>
+        <span class="heart-bg" style="top: 20%; left: 80%; animation-delay: 2s;">💕</span>
+        <span class="heart-bg" style="top: 60%; left: 10%; animation-delay: 4s;">❤️</span>
+        <span class="heart-bg" style="top: 80%; left: 70%; animation-delay: 1s;">💖</span>
+        <span class="heart-bg" style="top: 40%; left: 40%; animation-delay: 3s;">❤️</span>
+        <span class="heart-bg" style="top: 70%; left: 30%; animation-delay: 5s;">💕</span>
+        <span class="heart-bg" style="top: 30%; left: 60%; animation-delay: 1.5s;">❤️</span>
+        <span class="heart-bg" style="top: 50%; left: 90%; animation-delay: 2.5s;">💖</span>
+    </div>
+
+    <!-- Flying cupid arrow -->
+    <div class="cupid-arrow">💘</div>
+
+   
+
+    <!-- Main content -->
+    <div class="valentine-container">
+        <!-- Gift Box -->
+        <div class="gift-box-wrapper" id="giftBoxWrapper" onclick="openGiftBox()">
+            <div class="gift-box">
+                <div class="box-bottom">
+                    <div class="ribbon-vertical"></div>
+                    <div class="ribbon-horizontal"></div>
+                </div>
+                <div class="box-lid">
+                    <div class="bow">
+                        <div class="bow-center"></div>
+                    </div>
+                </div>
+                <!-- Confetti pieces -->
+                <div class="confetti-piece"></div>
+                <div class="confetti-piece"></div>
+                <div class="confetti-piece"></div>
+                <div class="confetti-piece"></div>
+                <div class="confetti-piece"></div>
+                <!-- Message card -->
+                <div class="message-card">
+                    <h3>Скъпа моя Мери</h3>
+                    <p>Имам нещо специално да те попитам...</p>
+                    <span style="font-size: 30px;">💕</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Valentine message -->
+        <div class="valentine-message" id="valentineMessage">
+            <h1>Ще бъдеш ли моята Валентинка?</h1>
+            <p class="subtitle">Караш сърцето ми да бие по-силно всеки ден</p>
+            
+            <div class="response-buttons" id="responseButtons">
+                <button class="btn yes-btn" onclick="sayYes()">ДА! ❤️</button>
+                <button class="btn no-btn" id="noBtn" onclick="moveNoButton()">Не</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Celebration overlay -->
+    <div class="celebration" id="celebration">
+        <div class="celebration-message">
+            <h2 style="font-size: 2em; margin-bottom: 20px;">УРА! 🎉</h2>
+            <p style="font-size: 0.7em;">Направи ме най-щастливия човек на света!</p>
+            <p style="font-size: 0.5em; margin-top: 20px;">Обичам те до луната и обратно ❤️</p>
+            <button class="continue-btn" onclick="goToHome()">
+                Продължи →
+            </button>
+        </div>
+        <!-- Click anywhere to close text -->
+        <p style="
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9em;
+            font-style: italic;
+        ">Натисни където и да е или ESC за да затвориш</p>
+    </div>
+
+    <script>
+        let giftBoxOpened = false;
+        let noButtonClicks = 0;
+        const noMessages = [
+            "По-скоро не",
+            "Сигурна ли си?",
+            "Моля те дее",
+            "Няма да съжаляваш",
+            "Ще съм тъжен 😢",
+            "Моля? 🥺",
+            "Защо въобще се чудиш?",
+            "Не ме ли обичаш?",
+            "Моля, кажи да!",
+            "Опитай пак!",
+            "Обичам те (цъкни да!)",
+            "Знаеш, че искаш 😊",
+            "Наистина ли не искаш?",
+            "Ще ти купя студен чай ",
+            "И цветя 🌹",
+            "И ще ти дам цялата си любов ❤️",
+        ];
+
+        function openGiftBox() {
+            if (!giftBoxOpened) {
+                document.getElementById('giftBoxWrapper').classList.add('opened');
+                // Play a small sound effect (optional)
+                setTimeout(() => {
+                    document.getElementById('valentineMessage').classList.add('show');
+                    setTimeout(() => {
+                        document.getElementById('responseButtons').classList.add('show');
+                    }, 500);
+                }, 800);
+                giftBoxOpened = true;
+            }
+        }
+
+        function sayYes() {
+            // Create celebration
+            const celebration = document.getElementById('celebration');
+            celebration.classList.add('active');
+
+            // Create confetti
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.backgroundColor = ['#ffeb3b', '#ff4757', '#ff6b9d', '#fff', '#ffd93d'][Math.floor(Math.random() * 5)];
+                    confetti.style.animationDelay = Math.random() * 3 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    celebration.appendChild(confetti);
+                }, i * 50);
+            }
+        }
+
+        function closeCelebration() {
+            const celebration = document.getElementById('celebration');
+            celebration.style.animation = 'fadeOut 0.5s';
+            setTimeout(() => {
+                celebration.classList.remove('active');
+                celebration.style.animation = '';
+            }, 500);
+        }
+
+        function goToHome() {
+            window.location.href = '/';
+        }
+
+        function moveNoButton() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.querySelector('.yes-btn');
+            const giftBox = document.querySelector('.gift-box-wrapper');
+            const message = document.querySelector('.valentine-message');
+            
+            // Check if we've reached the end of messages and showing "Не 😢"
+            if (noButtonClicks >= noMessages.length) {
+                // Just show alert, don't trigger Yes
+                alert("Съжалявам, това не е опция! ❤️");
+                return;
+            }
+            
+            // Change button text
+            noButtonClicks++;
+            if (noButtonClicks < noMessages.length) {
+                noBtn.textContent = noMessages[noButtonClicks];
+                
+                // Remove the yes button growing code
+                // const currentScale = parseFloat(yesBtn.style.transform.replace('scale(', '').replace(')', '') || '1');
+                // yesBtn.style.transform = `scale(${currentScale + 0.1})`;
+
+                // Don't change the NO button size, just move it
+                // noBtn.style.transform = `scale(${Math.max(0.5, 1 - noButtonClicks * 0.05)})`;
+                
+                // Get all elements to avoid
+                const giftBoxRect = giftBox.getBoundingClientRect();
+                const messageRect = message.getBoundingClientRect();
+                const yesBtnRect = yesBtn.getBoundingClientRect();
+                const responseButtonsRect = document.getElementById('responseButtons').getBoundingClientRect();
+                
+                // Calculate button dimensions
+                const btnWidth = noBtn.offsetWidth || 150;
+                const btnHeight = noBtn.offsetHeight || 50;
+                const screenPadding = window.innerWidth < 600 ? 10 : 20; // Less padding on mobile
+                
+                // Get viewport dimensions (use visualViewport for better mobile support)
+                const viewportWidth = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+                const viewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+                
+                // Define forbidden zones (areas where the button cannot go)
+                const forbiddenZones = [
+                    {
+                        // Gift box area with padding
+                        left: giftBoxRect.left - 50,
+                        right: giftBoxRect.right + 50,
+                        top: giftBoxRect.top - 50,
+                        bottom: giftBoxRect.bottom + 50
+                    },
+                    {
+                        // Message text area with padding
+                        left: messageRect.left - 30,
+                        right: messageRect.right + 30,
+                        top: messageRect.top - 30,
+                        bottom: messageRect.bottom + 30
+                    },
+                    {
+                        // Response buttons area (YES and original NO position) with padding
+                        left: responseButtonsRect.left - 50,
+                        right: responseButtonsRect.right + 50,
+                        top: responseButtonsRect.top - 30,
+                        bottom: responseButtonsRect.bottom + 30
+                    }
+                ];
+                
+                // Function to check if position overlaps with forbidden zones
+                function isPositionValid(x, y) {
+                    const btnRight = x + btnWidth;
+                    const btnBottom = y + btnHeight;
+                    
+                    for (const zone of forbiddenZones) {
+                        // Check if button rectangle overlaps with forbidden zone
+                        if (!(x > zone.right || btnRight < zone.left || 
+                              y > zone.bottom || btnBottom < zone.top)) {
+                            return false; // Overlapping
+                        }
+                    }
+                    return true; // No overlap
+                }
+                
+                // Find a valid position
+                let randomX, randomY;
+                let attempts = 0;
+                const maxAttempts = 100;
+                let positionFound = false;
+                
+                // Ensure positions are within bounds
+                const safeMaxX = Math.max(screenPadding, viewportWidth - btnWidth - screenPadding);
+                const safeMaxY = Math.max(screenPadding, viewportHeight - btnHeight - screenPadding);
+                
+                // Define preferred positions (corners and edges) - clamped to safe bounds
+                const preferredPositions = [
+                    { x: screenPadding, y: screenPadding }, // Top-left
+                    { x: Math.min(safeMaxX, viewportWidth - btnWidth - screenPadding), y: screenPadding }, // Top-right
+                    { x: screenPadding, y: Math.min(safeMaxY, viewportHeight - btnHeight - screenPadding) }, // Bottom-left
+                    { x: Math.min(safeMaxX, viewportWidth - btnWidth - screenPadding), y: Math.min(safeMaxY, viewportHeight - btnHeight - screenPadding) }, // Bottom-right
+                ];
+                
+                // On mobile, use only corners to maximize distance from content
+                if (viewportWidth < 600) {
+                    // Don't add middle positions on mobile
+                } else {
+                    preferredPositions.push(
+                        { x: screenPadding, y: Math.min(safeMaxY, viewportHeight / 2 - btnHeight / 2) }, // Middle-left
+                        { x: Math.min(safeMaxX, viewportWidth - btnWidth - screenPadding), y: Math.min(safeMaxY, viewportHeight / 2 - btnHeight / 2) }, // Middle-right
+                        { x: Math.min(safeMaxX, viewportWidth / 2 - btnWidth / 2), y: screenPadding }, // Top-center
+                        { x: Math.min(safeMaxX, viewportWidth / 2 - btnWidth / 2), y: Math.min(safeMaxY, viewportHeight - btnHeight - screenPadding) } // Bottom-center
+                    );
+                }
+                
+                // Shuffle preferred positions to add variety
+                const shuffledPositions = [...preferredPositions].sort(() => Math.random() - 0.5);
+                
+                // Get current button position to avoid staying in the same place
+                const currentLeft = parseInt(noBtn.style.left) || 0;
+                const currentTop = parseInt(noBtn.style.top) || 0;
+                
+                // Try shuffled preferred positions first, but skip current position
+                for (const pos of shuffledPositions) {
+                    // Skip if it's too close to current position
+                    const distanceFromCurrent = Math.sqrt(
+                        Math.pow(pos.x - currentLeft, 2) + Math.pow(pos.y - currentTop, 2)
+                    );
+                    
+                    if (distanceFromCurrent > 100 && isPositionValid(pos.x, pos.y)) {
+                        randomX = pos.x;
+                        randomY = pos.y;
+                        positionFound = true;
+                        break;
+                    }
+                }
+                
+                // If no preferred position works, try random positions
+                while (!positionFound && attempts < maxAttempts) {
+                    // Ensure random positions stay within safe bounds
+                    const rangeX = Math.max(1, safeMaxX - screenPadding);
+                    const rangeY = Math.max(1, safeMaxY - screenPadding);
+                    
+                    randomX = Math.floor(Math.random() * rangeX) + screenPadding;
+                    randomY = Math.floor(Math.random() * rangeY) + screenPadding;
+                    
+                    // Double-check bounds
+                    randomX = Math.max(screenPadding, Math.min(randomX, safeMaxX));
+                    randomY = Math.max(screenPadding, Math.min(randomY, safeMaxY));
+                    
+                    // Make sure the new position is far enough from current position
+                    const distanceFromCurrent = Math.sqrt(
+                        Math.pow(randomX - currentLeft, 2) + Math.pow(randomY - currentTop, 2)
+                    );
+                    
+                    if (distanceFromCurrent > 50 && isPositionValid(randomX, randomY)) { // Reduced distance requirement for mobile
+                        positionFound = true;
+                    }
+                    attempts++;
+                }
+                
+                // Fallback: try any valid position from shuffled list
+                if (!positionFound) {
+                    for (const pos of shuffledPositions) {
+                        if (isPositionValid(pos.x, pos.y)) {
+                            randomX = pos.x;
+                            randomY = pos.y;
+                            positionFound = true;
+                            break;
+                        }
+                    }
+                }
+                
+                // Last resort: place at a safe corner
+                if (!positionFound) {
+                    const corners = [
+                        { x: screenPadding, y: screenPadding },
+                        { x: Math.min(safeMaxX, viewportWidth - btnWidth - screenPadding), y: screenPadding },
+                        { x: screenPadding, y: Math.min(safeMaxY, viewportHeight - btnHeight - screenPadding) },
+                        { x: Math.min(safeMaxX, viewportWidth - btnWidth - screenPadding), y: Math.min(safeMaxY, viewportHeight - btnHeight - screenPadding) }
+                    ];
+                    const randomCorner = corners[Math.floor(Math.random() * corners.length)];
+                    randomX = Math.max(screenPadding, Math.min(randomCorner.x, safeMaxX));
+                    randomY = Math.max(screenPadding, Math.min(randomCorner.y, safeMaxY));
+                }
+                
+                // Final safety check before applying position
+                randomX = Math.max(0, Math.min(randomX, viewportWidth - btnWidth));
+                randomY = Math.max(0, Math.min(randomY, viewportHeight - btnHeight));
+                
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = randomX + 'px';
+                noBtn.style.top = randomY + 'px';
+                noBtn.style.zIndex = '100';
+            } else {
+                // Show final "Не 😢" text and return to normal position
+                noBtn.textContent = "Не 😢";
+                // Reset position to be next to Yes button
+                noBtn.style.position = 'relative';
+                noBtn.style.left = 'auto';
+                noBtn.style.top = 'auto';
+                // Remove transform scale reset since we're not changing size anymore
+                noBtn.style.zIndex = 'auto';
+                // Don't reset Yes button size
+            }
+        }
+
+        // Add sparkles on mouse move
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.98) {
+                const sparkle = document.createElement('div');
+                sparkle.innerHTML = '✨';
+                sparkle.style.position = 'fixed';
+                sparkle.style.left = e.clientX + 'px';
+                sparkle.style.top = e.clientY + 'px';
+                sparkle.style.pointerEvents = 'none';
+                sparkle.style.fontSize = '20px';
+                sparkle.style.animation = 'fadeOut 1s forwards';
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 1000);
+            }
+        });
+
+        // Close celebration on click
+        document.getElementById('celebration').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCelebration();
+            }
+        });
+
+        // Close celebration on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const celebration = document.getElementById('celebration');
+                if (celebration.classList.contains('active')) {
+                    closeCelebration();
+                }
+            }
+        });
+
+        // Add fadeOut animation
+        const style = document.createElement('style');
+        style.innerHTML = '@keyframes fadeOut { to { opacity: 0; transform: translateY(-20px); } }';
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
